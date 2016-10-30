@@ -67,11 +67,8 @@ public class Task1 implements Runnable {
                 });
             }
             log.debug("Количество встретившихся последовательностей = " + probabilities.size());
-            // количество не встречающихся символов алфавита
             double missing = Math.pow(ALPHABET_SIZE, n) - probabilities.size();
-            // доля вероятности приходящаяся на эти символы
             double missingProbability = missing / Math.pow(totalSize, n);
-            // коэффициент нормировки для оставшихся вероятностей
             double uncutMultiplier = 1 - missingProbability;
 
             Map<Symbol, Double> uncutProbabilities = new HashMap<>();
@@ -83,13 +80,13 @@ public class Task1 implements Runnable {
             }
 
             double entropy = 0.0;
-            for (double i : probabilities.values()) {
-                entropy -= i * log(i, 2);
+            for (double px : probabilities.values()) {
+                entropy -= px * log(px, 2);
             }
 
             double uncutEntropy = 0.0;
-            for (double i : uncutProbabilities.values()) {
-                uncutEntropy -= i * log(i, 2);
+            for (double px : uncutProbabilities.values()) {
+                uncutEntropy -= px * log(px, 2);
             }
             uncutEntropy += missingProbability * log(Math.pow(totalSize, n), 2);
 

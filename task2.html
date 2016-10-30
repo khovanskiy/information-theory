@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name=viewport content="width=device-width, initial-scale=1">
+    <title>Отчет по заданию 2</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.6.0/katex.min.css">
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.3.0/Chart.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.6.0/katex.min.js"></script>
+</head>
+<body>
+<div class='container'>
+    <h1>Отчет по заданию 2
+        <small>Хованский Виктор Сергеевич, группа М4136с</small>
+    </h1>
+    <h2>Матрица <span class="tex" data-value="M">M</span></h2>
+    <p class="lead">
+        Дан марковский источник с заданной матрицей переходных вероятностей:
+    </p>
+    <table class="table table-bordered">
+        <tr>
+                <td>0.333333</td>
+                <td>0.333333</td>
+                <td>0.333333</td>
+        </tr>
+        <tr>
+                <td>0</td>
+                <td>0.5</td>
+                <td>0.5</td>
+        </tr>
+        <tr>
+                <td>0.25</td>
+                <td>0</td>
+                <td>0.75</td>
+        </tr>
+    </table>
+    <h2>Вектор <span class="tex" data-value="p">p</span></h2>
+    <p class="lead">
+        Найдем вектор <span class="tex" data-value="p">p</span>: такой, что <span class="tex" data-value="p = p * M">p = p * M</span>.
+        Это можно сделать, если решить систему уравнений:
+    </p>
+    <div>
+        <ul>
+            <li><span class="tex" data-value="p = p * M">p = p * M</span></li>
+            <li><span class="tex" data-value="p_1 + p_2 + p_3 = 1">p_1 + p_2 + p_3 = 1</span></li>
+        </ul>
+    </div>
+    <p class="lead">Тогда получаются следующие значения:</p>
+    <table class="table table-bordered">
+        <tr>
+            <td>0.230769</td>
+            <td>0.153846</td>
+            <td>0.615385</td>
+        </tr>
+    </table>
+    <h2>Энтропия <span class="tex" data-value="H(X)">H(X)</span></h2>
+    <p class="lead">
+        Для нахождения <span class="tex" data-value="H(X)">H(X)</span> используем формулу:
+        <span class="tex" data-value="H(X) = -\sum_{x \in X} p(x) * \log_2(p(x))">H(X) = -\Sum_{x \in X} p(x) * \log_2(p(x))</span>
+    </p>
+    <div class="alert alert-success">Тогда <span class="tex" data-value="H(X) = 1.334679">H(X) = 1.334679</span></div>
+    <h2>Энтропия <span class="tex" data-value="H(X|X^{\infty})"></span></h2>
+    <p class="lead">
+        Для нахождения <span class="tex" data-value="H(X|X^{\infty})"></span> используем формулу:
+        <span class="tex" data-value="H(X|X^{\infty}) = H(X|X^s)"></span>, где <span class="tex" data-value="s"></span>
+        - связность, а
+        <span class="tex" data-value="H(X|X^s) = -\sum_i \sum_j p_i * M_{i,j} * \log_2(M_{i,j})"></span>
+    </p>
+    <div class="alert alert-success">Тогда <span class="tex" data-value="H(X|X^{\infty}) = 1.018855"></span></div>
+    <h2>Энтропии <span class="tex" data-value="H_2(X)"></span> и <span class="tex" data-value="H_n(X)"></span></h2>
+    <p class="lead">
+        Для нахождения <span class="tex" data-value="H_2(X)"></span> и <span class="tex" data-value="H_n(X)"></span>
+        используем формулу:
+        <span class="tex" data-value="H_n(X) = \frac{H(X)}{n}"></span>, где <span class="tex" data-value="n"></span> -
+        размер слова, а
+        <span class="tex" data-value="\frac{H(X)}{n} = \frac{s*H_s(X) + (n - s)*H(X|X^s)}{n}"></span>
+    </p>
+    <div class="alert alert-success">Тогда <span class="tex" data-value="H_2(X) = 1.176767"></span> и
+        <span class="tex" data-value="H_n(X) = 1.018855 + \frac{0.315824}{2}"></span>
+    </div>
+    <h2>Код Хаффмана для <span class="tex" data-value="n = 1"></span></h2>
+    <h3>Вероятности</h3>
+    <table class="table table-bordered">
+        <tr>
+            <th class="col-xs-3">Слово</th>
+            <th>Вероятность</th>
+        </tr>
+        <tr>
+            <td>a</td>
+            <td>0.230769</td>
+        </tr>
+        <tr>
+            <td>b</td>
+            <td>0.153846</td>
+        </tr>
+        <tr>
+            <td>c</td>
+            <td>0.615385</td>
+        </tr>
+    </table>
+
+    <h3>Коды</h3>
+    <table class="table table-bordered">
+        <tr>
+            <th class="col-xs-3">Слово</th>
+            <th>Код</th>
+        </tr>
+        <tr>
+            <td>a</td>
+            <td>01</td>
+        </tr>
+        <tr>
+            <td>b</td>
+            <td>00</td>
+        </tr>
+        <tr>
+            <td>c</td>
+            <td>1</td>
+        </tr>
+    </table>
+    <div class="alert alert-success">И количество бит на символ равно <span class="tex"
+                                                                            data-value="K_1(X) = 1.384615"></span>
+    </div>
+    <h2>Код Хаффмана для <span class="tex" data-value="n = 2"></span></h2>
+    <h3>Вероятности</h3>
+    <table class="table table-bordered">
+        <tr>
+            <th class="col-xs-3">Слово</th>
+            <th>Вероятность</th>
+        </tr>
+        <tr>
+            <td>aa</td>
+            <td>0.076923</td>
+        </tr>
+        <tr>
+            <td>bb</td>
+            <td>0.076923</td>
+        </tr>
+        <tr>
+            <td>cc</td>
+            <td>0.461538</td>
+        </tr>
+        <tr>
+            <td>ab</td>
+            <td>0.076923</td>
+        </tr>
+        <tr>
+            <td>bc</td>
+            <td>0.076923</td>
+        </tr>
+        <tr>
+            <td>ac</td>
+            <td>0.076923</td>
+        </tr>
+        <tr>
+            <td>ca</td>
+            <td>0.153846</td>
+        </tr>
+        <tr>
+            <td>ba</td>
+            <td>0</td>
+        </tr>
+        <tr>
+            <td>cb</td>
+            <td>0</td>
+        </tr>
+    </table>
+
+    <h3>Коды</h3>
+    <table class="table table-bordered">
+        <tr>
+            <th class="col-xs-3">Слово</th>
+            <th>Код</th>
+        </tr>
+        <tr>
+            <td>aa</td>
+            <td>1100</td>
+        </tr>
+        <tr>
+            <td>ab</td>
+            <td>1101</td>
+        </tr>
+        <tr>
+            <td>ac</td>
+            <td>1010</td>
+        </tr>
+        <tr>
+            <td>bb</td>
+            <td>1011</td>
+        </tr>
+        <tr>
+            <td>bc</td>
+            <td>100</td>
+        </tr>
+        <tr>
+            <td>ca</td>
+            <td>111</td>
+        </tr>
+        <tr>
+            <td>cc</td>
+            <td>0</td>
+        </tr>
+    </table>
+    <div class="alert alert-success">И количество бит на символ равно <span class="tex"
+                                                                            data-value="K_2(X) = 1.192308"></span>
+    </div>
+    <h2>Алгоритм кодирования</h2>
+    <ul class="lead">
+        <li>Первый символ кодируем с помощью алгоритма Хаффмана;</li>
+        <li>Последующие символы будем кодировать относительно предыдущего с помощью таблицы:
+            <table class="table table-bordered">
+                <tr>
+                    <td>Предыдущий символ</td>
+                    <td colspan="3">a</td>
+                    <td colspan="2">b</td>
+                    <td colspan="2">c</td>
+                </tr>
+                <tr>
+                    <td>Следующий символ</td>
+                    <td>a</td>
+                    <td>b</td>
+                    <td>c</td>
+                    <td>b</td>
+                    <td>c</td>
+                    <td>a</td>
+                    <td>c</td>
+                </tr>
+                <tr>
+                    <td>Кодовый символ</td>
+                    <td>0</td>
+                    <td>10</td>
+                    <td>11</td>
+                    <td>0</td>
+                    <td>1</td>
+                    <td>0</td>
+                    <td>1</td>
+                </tr>
+            </table>
+        </li>
+    </ul>
+    <div class="alert alert-success">И количество бит на символ равно <span class="tex"
+                                                                            data-value="K^*(X) = 1.153846"></span>
+
+    </div>
+    <h2>Дополнение к заданию</h2>
+    <p class="lead">
+        Первые <span class="tex" data-value="s"></span> символов кодируются с помошью алгоритма Хаффмана в соответствии
+        с
+        финальными
+        вероятностями,
+        а последующие с применением марковской цепи. В качестве символа выбирается последовательность разумной длины в
+        зависимости от алфавита, которые дают блоки размера <span class="tex" data-value="N"></span>.
+    </p>
+    <script>
+        $("span.tex").each(function (index, element) {
+            var value = $(element).attr("data-value");
+            katex.render(value, element);
+        });
+    </script>
+</body>
+</html>
