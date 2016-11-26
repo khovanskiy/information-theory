@@ -22,17 +22,11 @@ public class Task2 implements Runnable {
     @Override
     public void run() {
         Map<String, Object> parameters = new HashMap<>();
-        /*double[][] M = new double[][]{
-                {1d / 4, 3d / 4, 0},
-                {0, 1d / 2, 1d / 2},
-                {1d / 3, 1d / 3, 1d / 3},
-        };/**/
-
         double[][] M = new double[][]{
                 {1d/3, 1d/3, 1d/3},
                 {0, 1d/2, 1d/2},
                 {1d/4, 0, 3d/4},
-        };/**/
+        };
         {
             List<List<Double>> matrix = new ArrayList<>();
             for (int i = 0; i < M.length; ++i) {
@@ -48,7 +42,6 @@ public class Task2 implements Runnable {
         for (int i = 0; i < M.length; ++i) {
             System.out.println("Row #" + i + " validated: " + validateRowSum(M[i]));
         }
-        /*double[] p = new double[]{4d / 25, 12d / 25, 9d / 25};/**/
         double[] p = new double[]{3d/13, 2d/13, 8d/13};
         {
             List<Double> pList = new ArrayList<>();
