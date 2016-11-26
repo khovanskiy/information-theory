@@ -1,3 +1,5 @@
+package ru.ifmo.ctddev.khovanskiy.information.task2;
+
 import freemarker.cache.ClassTemplateLoader;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
@@ -5,6 +7,7 @@ import freemarker.template.Version;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.comparators.ComparatorChain;
+import ru.ifmo.ctddev.khovanskiy.information.util.Utils;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;

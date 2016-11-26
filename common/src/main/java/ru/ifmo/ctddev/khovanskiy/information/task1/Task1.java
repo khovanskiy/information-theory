@@ -1,3 +1,5 @@
+package ru.ifmo.ctddev.khovanskiy.information.task1;
+
 import freemarker.cache.ClassTemplateLoader;
 import freemarker.template.Configuration;
 import freemarker.template.Template;

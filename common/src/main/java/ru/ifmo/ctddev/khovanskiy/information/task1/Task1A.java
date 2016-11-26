@@ -1,3 +1,5 @@
+package ru.ifmo.ctddev.khovanskiy.information.task1;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;

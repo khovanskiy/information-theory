@@ -1,9 +1,9 @@
 <#-- @ftlvariable name="file" type="java.io.File" -->
 <#-- @ftlvariable name="archive" type="java.io.File" -->
-<#-- @ftlvariable name="points1" type="java.util.List<Task1.Point>" -->
-<#-- @ftlvariable name="points2" type="java.util.List<Task1.Point>" -->
-<#-- @ftlvariable name="points4" type="java.util.List<Task1.Point>" -->
-<#-- @ftlvariable name="results" type="java.util.List<Task1.Result>" -->
+<#-- @ftlvariable name="points1" type="java.util.List<ru.ifmo.ctddev.khovanskiy.information.task1.Task1.Point>" -->
+<#-- @ftlvariable name="points2" type="java.util.List<ru.ifmo.ctddev.khovanskiy.information.task1.Task1.Point>" -->
+<#-- @ftlvariable name="points4" type="java.util.List<ru.ifmo.ctddev.khovanskiy.information.task1.Task1.Point>" -->
+<#-- @ftlvariable name="results" type="java.util.List<ru.ifmo.ctddev.khovanskiy.information.task1.Task1.Result>" -->
 <!DOCTYPE html>
 <html>
 <head>
