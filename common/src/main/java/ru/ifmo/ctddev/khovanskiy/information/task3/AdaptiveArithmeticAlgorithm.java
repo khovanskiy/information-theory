@@ -16,7 +16,7 @@ import java.util.List;
 public class AdaptiveArithmeticAlgorithm extends Algorithm {
 
     @Override
-    public List<Integer> encode(String input, boolean showDebugInfo) {
+    public AdaptiveArithmeticResult encode(String input, boolean showDebugInfo) {
         AdaptiveArithmeticResult result = new AdaptiveArithmeticResult();
         input = Utils.convertToAscii(input);
         result.setInput(input);
@@ -70,12 +70,12 @@ public class AdaptiveArithmeticAlgorithm extends Algorithm {
             stepResults.add(stepResult);
         }
         result.setStepResults(stepResults);
-
         // Формируем кодовое слово
         // Получаем дробную часть
         F = Utils.fractionalPart(F);
         // Количество разрядов после запятой равны длине кодового слова
         int l = (int) Math.ceil(-Utils.log(G.doubleValue(), 2));
+        result.setBits(l);
         // Кодовое слово
         List<Integer> code = Utils.fractionalPartToBinList(F, l);
         String output = Utils.convertIntListToString(code);
@@ -96,6 +96,6 @@ public class AdaptiveArithmeticAlgorithm extends Algorithm {
             out.println("Искомый код = " + output);
         }
 
-        return code;
+        return result;
     }
 }

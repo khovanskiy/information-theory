@@ -10,7 +10,7 @@ import java.util.Locale;
  * Victor Khovanskiy
  */
 @Slf4j
-public class PPMA {
+public class PPMA extends Algorithm {
     //private static final String[] proverbs = {"IF WE CANNOT DO AS WE WOULD WE SHOULD DO AS WE CAN"};
     final static int D = 5;
 
@@ -24,7 +24,8 @@ public class PPMA {
         return result;
     }
 
-    private static void encodePPMA(final String s) {
+    @Override
+    public AlgorithmResult encode(final String s, boolean showDebugInfo) {
         System.out.println("proverb = " + s + "\n");
         int unused = 1 << 8;
         String was = "";
@@ -106,6 +107,7 @@ public class PPMA {
             System.out.println("|");
         }
         System.out.printf(Locale.US, "Итого = up[ %.4f + %.4f ] + 1 = %d бит\n\n", prEsc, prSymbol, (1 + (int) Math.ceil(prEsc + prSymbol)));
+        return null;
     }
 
     private static String genFraction(double x) {

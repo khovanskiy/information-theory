@@ -71,7 +71,12 @@ public class Utils {
     }
 
     /**
-     * e.g. 5 -> 3
+     * Возвращает количество битов, которые требуются для бинарного представления числа
+     *
+     * Например, 5 -> 3
+     *
+     * @param value число
+     * @return количество битов
      */
     public static int getBitsCount(int value) {
         int cnt = 0;
@@ -82,7 +87,7 @@ public class Utils {
         return cnt;
     }
 
-    public static List<Integer> charTo01List(int value) {
+    public static List<Integer> charTo01List(char value) {
         List<Integer> res = new ArrayList<>();
         for (int bit = 7; bit >= 0; bit--) {
             res.add((((1 << bit) & value) != 0) ? 1 : 0);

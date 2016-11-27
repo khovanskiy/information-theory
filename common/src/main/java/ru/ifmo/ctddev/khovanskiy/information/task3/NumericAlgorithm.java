@@ -1,15 +1,17 @@
 package ru.ifmo.ctddev.khovanskiy.information.task3;
 
+import lombok.extern.slf4j.Slf4j;
 import ru.ifmo.ctddev.khovanskiy.information.util.Utils;
 
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.util.*;
 
+@Slf4j
 public class NumericAlgorithm extends Algorithm {
 
     @Override
-    public List<Integer> encode(String input, boolean showDebugInfo) {
+    public NumericResult encode(String input, boolean showDebugInfo) {
         NumericResult result = new NumericResult();
         input = Utils.convertToAscii(input);
         result.setInput(input);
@@ -43,6 +45,7 @@ public class NumericAlgorithm extends Algorithm {
 
         // Количество последовательностей с фиксированной композицией
         BigInteger numberOfSequences = N(tau);
+        result.setNumberOfSequences(numberOfSequences);
         // Длина части кодового слова для передачи номера последовательности
         int l2 = (int) Math.ceil(Utils.log(numberOfSequences.doubleValue(), 2));
         result.setL2(l2);
@@ -62,7 +65,7 @@ public class NumericAlgorithm extends Algorithm {
         String output = Utils.convertIntListToString(code);
         result.setOutput(output);
 
-        if (showDebugInfo) {
+        if (log.isInfoEnabled()) {
             out.println("строка = " + input);
             out.println("количество композиций = " + numberOfCompositions);
             out.println("номер текущей композиции = " + positionOfComposition);
@@ -75,7 +78,7 @@ public class NumericAlgorithm extends Algorithm {
 
             out.println("encoded string = " + output);
         }
-        return code;
+        return result;
     }
 
     /**

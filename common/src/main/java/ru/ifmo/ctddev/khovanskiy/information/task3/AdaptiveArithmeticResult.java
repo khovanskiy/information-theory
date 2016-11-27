@@ -15,5 +15,6 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AdaptiveArithmeticResult extends AlgorithmResult {
+    private int bits;
     private List<AdaptiveArithmeticStepResult> stepResults;
 }

@@ -15,9 +15,10 @@ import java.util.*;
 public class HuffmanAlgorithm extends Algorithm {
 
     @Override
-    public List<Integer> encode(String input, boolean showDebugInfo) {
+    public HuffmanResult encode(String input, boolean showDebugInfo) {
         HuffmanResult result = new HuffmanResult();
         input = Utils.convertToAscii(input);
+        result.setInput(input);
         char[] x = input.toCharArray();
 
         // Композиция
@@ -74,7 +75,8 @@ public class HuffmanAlgorithm extends Algorithm {
         // Количество битов для передачи символов
         int symbolsCost = symbolsCost(nodes);
         // Количество битов для передачи дерева
-        int treeBits = levelsCost + symbolsCost;
+        int treeCost = levelsCost + symbolsCost;
+        result.setTreeCost(treeCost);
 
         // Количество битов для передачи сообщения
         int messageCost = 0;
@@ -83,21 +85,21 @@ public class HuffmanAlgorithm extends Algorithm {
             codes.put(node.label, node.code);
             messageCost += node.priority * node.code.length();
         }
+        result.setMessageCost(messageCost);
 
         if (showDebugInfo) {
             out.println("строка = " + input);
             levels.forEach((ordinal, level) -> {
                 out.println(level.getOrdinal() + " " + level.getNumberOfNodes() + " " + level.getNumberOfLeafs() + " 0..." + level.getNumberOfNodes() + " " + level.getBits());
             });
-            out.println("| Буква | Число появлений | Длинна кодового слова | Кодовое слово |");
-            out.println("|:-|:-|:-|:-|");
+            out.println("Буква\tЧисло появлений\tДлинна кодового слова\tКодовое слово");
             for (HuffmanStepResult stepResult : stepResults) {
-                out.println("|" + stepResult.getSymbol() + "|" + stepResult.getNumberOfOccurrence() + "|" + stepResult.getCode().length() + "|" + stepResult.getCode() + "|");
+                out.println(stepResult.getSymbol() + "\t" + stepResult.getNumberOfOccurrence() + "\t" + stepResult.getCode().length() + "\t" + stepResult.getCode());
             }
             out.println("Количество бит для кодирования дерева = " + (nodes.size() * 2 - 1) + " + 8 * " + nodes.size() + " = " + (nodes.size() * 10 - 1));
 
             out.println("стоимость кодирования сообщения = " + messageCost);
-            out.println("общая стоимость = " + (treeBits + messageCost));
+            out.println("общая стоимость = " + (treeCost + messageCost));
             out.println("стоимость кодирования регулярным кодом (без сжатия) = 8 * " + input.length() + " = " + (8 * input.length()));
 
             StringBuilder sb = new StringBuilder();
@@ -107,7 +109,7 @@ public class HuffmanAlgorithm extends Algorithm {
             String output = sb.toString();
             result.setOutput(output);
         }
-        return null;
+        return result;
     }
 
     /**
