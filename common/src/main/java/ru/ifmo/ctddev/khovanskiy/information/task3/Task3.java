@@ -10,9 +10,9 @@ public class Task3 implements Runnable {
 
     @Override
     public void run() {
-        String source = "cabbacbcbb";
+        String source = "After dinner sit a while, after supper walk a mile";//"abaaaababa";
         Algorithm[] algorithms = {
-                new AdaptiveArithmeticAlgorithm()
+                new NumericAlgorithm()
         };
         for (Algorithm algorithm : algorithms) {
             algorithm.encode(source, true);

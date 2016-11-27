@@ -16,14 +16,9 @@ import java.util.List;
 public class AdaptiveArithmeticAlgorithm extends Algorithm {
 
     @Override
-    public List<Integer> encode(String inputString, boolean showDebugInfo) {
+    public List<Integer> encode(String input, boolean showDebugInfo) {
         AdaptiveArithmeticResult result = new AdaptiveArithmeticResult();
-        String input = null;
-        try {
-            input = new String(inputString.getBytes("ascii"), "ascii");
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
+        input = Utils.convertToAscii(input);
         result.setInput(input);
 
         char[] x = input.toCharArray();
@@ -83,7 +78,7 @@ public class AdaptiveArithmeticAlgorithm extends Algorithm {
         int l = (int) Math.ceil(-Utils.log(G.doubleValue(), 2));
         // Кодовое слово
         List<Integer> code = Utils.fractionalPartToBinList(F, l);
-        String output = Utils.convertBinListToString(code);
+        String output = Utils.convertIntListToString(code);
         result.setOutput(output);
 
         if (showDebugInfo) {

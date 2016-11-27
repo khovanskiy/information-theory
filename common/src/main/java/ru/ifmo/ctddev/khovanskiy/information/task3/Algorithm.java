@@ -7,6 +7,9 @@ import java.util.List;
  * @author victor
  */
 public abstract class Algorithm {
+    /**
+     * Размер алфавита
+     */
     protected static final int M = 256;
     protected PrintStream out = System.out;
 
