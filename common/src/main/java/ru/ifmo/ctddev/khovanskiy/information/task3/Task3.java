@@ -31,7 +31,8 @@ public class Task3 implements Runnable {
         //algorithms.put("adaptive", new AdaptiveArithmeticAlgorithm());
         //algorithms.put("numeric", new NumericAlgorithm());
         //algorithms.put("lz77", new LZ77Algorithm());
-        algorithms.put("lz78", new LZ78Algorithm());
+        //algorithms.put("lz78", new LZ78Algorithm());
+        algorithms.put("ppma", new PPMAAlgorithm());
 
         Map<String, Object> parameters = new HashMap<>();
         for (Map.Entry<String, Algorithm> entry : algorithms.entrySet()) {

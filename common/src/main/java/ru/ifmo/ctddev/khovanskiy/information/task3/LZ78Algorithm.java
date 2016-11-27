@@ -18,6 +18,8 @@ public class LZ78Algorithm extends Algorithm {
     public LZ78Result encode(String input, boolean showDebugInfo) {
         LZ78Result result = new LZ78Result();
         input = Utils.convertToAscii(input);
+        result.setInput(input);
+
         char[] x = input.toCharArray();
         int n = x.length;
 
@@ -74,13 +76,16 @@ public class LZ78Algorithm extends Algorithm {
             ++ordinal;
         }
         result.setStepResults(stepResults);
+        result.setOutput(Utils.convertIntListToString(code));
+        result.setBits(code.size());
 
         if (log.isInfoEnabled()) {
-            log.info("Шаг\tСловарь\tНомер слова\tКодовые символы\t\tЗатраты");
+            log.info("Алгоритм LZ78");
+            log.info("Шаг\tСловарь\tНомер слова\tКодовые символы\tЗатраты");
             for (LZ78StepResult sr : stepResults) {
-                log.info(sr.getOrdinal() + "\t" + sr.getSequence() + "\t\t" + sr.getWordNumber() + "\t\t\t" + sr.getCode() + "\t\t" + sr.getBits());
+                log.info(sr.getOrdinal() + "\t" + sr.getSequence() + "\t\t" + sr.getWordNumber() + "\t\t\t" + sr.getCode() + "\t\t\t" + sr.getBits());
             }
-            log.info("Итого = " + code.size() + " бит");
+            log.info("Итого = " + result.getBits() + " бит");
         }
         return result;
     }

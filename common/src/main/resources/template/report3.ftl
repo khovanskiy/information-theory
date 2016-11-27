@@ -3,6 +3,7 @@
 <#-- @ftlvariable name="numeric" type="ru.ifmo.ctddev.khovanskiy.information.task3.NumericResult" -->
 <#-- @ftlvariable name="lz77" type="ru.ifmo.ctddev.khovanskiy.information.task3.LZ77Result" -->
 <#-- @ftlvariable name="lz78" type="ru.ifmo.ctddev.khovanskiy.information.task3.LZ78Result" -->
+<#-- @ftlvariable name="ppma" type="ru.ifmo.ctddev.khovanskiy.information.task3.PPMAResult" -->
 <!DOCTYPE html>
 <html>
 <head>
@@ -23,6 +24,7 @@
     </h1>
 <#if huffman??>
     <h2>Алгоритм Хаффмана</h2>
+    <div class="alert alert-warning">Исходная строка = ${huffman.input}</div>
     <h3>Подсчет количества битов на передачу дерева</h3>
     <table class="table table-bordered">
         <tr>
@@ -71,6 +73,7 @@
 </#if>
 <#if adaptive??>
     <h2>Адаптивное кодирование с применением арифметического кодирования</h2>
+    <div class="alert alert-warning">Исходная строка = ${adaptive.input}</div>
     <table class="table table-bordered">
         <tr>
             <th>Шаг</th>
@@ -121,6 +124,7 @@
 </#if>
 <#if lz77??>
     <h2>Алгоритм LZ77</h2>
+    <div class="alert alert-warning">Исходная строка = ${lz77.input}</div>
     <table class="table table-bordered">
         <tr>
             <th>Шаг</th>
@@ -150,6 +154,7 @@
 </#if>
 <#if lz78??>
     <h2>Алгоритм LZ78</h2>
+    <div class="alert alert-warning">Исходная строка = ${lz78.input}</div>
     <table class="table table-bordered">
         <tr>
             <th>Шаг</th>
@@ -168,8 +173,39 @@
             </tr>
         </#list>
         <tr>
-            <td colspan="6">Итого</td>
+            <td colspan="4">Итого</td>
             <td>${lz78.bits}</td>
+        </tr>
+    </table>
+</#if>
+<#if ppma??>
+    <h2>Алгоритм PPMA</h2>
+    <div class="alert alert-warning">Исходная строка = ${ppma.input}</div>
+    <table class="table table-bordered">
+        <tr>
+            <th rowspan="2" style="vertical-align: middle">Шаг</th>
+            <th rowspan="2" style="vertical-align: middle">Буква</th>
+            <th rowspan="2" style="vertical-align: middle">Контекст</th>
+            <th rowspan="2" style="vertical-align: middle"><span class="tex" data-value="\tau_t(s)">tau_t(s)</span></th>
+            <th colspan="2" style="text-align: center;">PPMA</th>
+        </tr>
+        <tr>
+            <th><span class="tex" data-value="p_t(esc|s)">p_t(esc|s)</span></th>
+            <th><span class="tex" data-value="p_t(a|c)">p_t(ac)</span></th>
+        </tr>
+        <#list ppma.stepResults as step>
+            <tr>
+                <td>${step.ordinal}</td>
+                <td>${step.symbol}</td>
+                <td>${step.context}</td>
+                <td>${step.tau}</td>
+                <td>${step.pescs}</td>
+                <td>${step.pac}</td>
+            </tr>
+        </#list>
+        <tr>
+            <td colspan="5">Итого</td>
+            <td>${ppma.bits}</td>
         </tr>
     </table>
 </#if>
