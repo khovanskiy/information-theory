@@ -1,118 +1,222 @@
 package ru.ifmo.ctddev.khovanskiy.information.task3;
 
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.comparators.ComparatorChain;
+import ru.ifmo.ctddev.khovanskiy.information.util.Utils;
 
+import java.math.BigInteger;
 import java.util.*;
 
 /**
- * Huffman algorithm's implementation
- *
  * @author Victor Khovanskiy
  */
 @Slf4j
 public class HuffmanAlgorithm extends Algorithm {
-    static int totalNodes = 0;
 
     @Override
     public List<Integer> encode(String input, boolean showDebugInfo) {
-        generateHuffmanCode(input);
+        HuffmanResult result = new HuffmanResult();
+        input = Utils.convertToAscii(input);
+        char[] x = input.toCharArray();
+
+        // Композиция
+        Map<Character, Integer> tau = tau(x);
+
+        // Сортируем по частоте появлений, затем по алфавиту
+        ComparatorChain<Node> comparatorChain = new ComparatorChain<>();
+        comparatorChain.addComparator(Comparator.comparingDouble(o -> o.priority));
+        comparatorChain.addComparator(Comparator.<Node, String>comparing(o -> o.label));
+        PriorityQueue<Node> queue = new PriorityQueue<>(comparatorChain);
+
+        // Строим дерево
+        List<Node> nodes = new ArrayList<>();
+        tau.forEach((label, priority) -> {
+            Node node = new Node(label + "", priority);
+            queue.add(node);
+            nodes.add(node);
+        });
+        while (queue.size() > 1) {
+            Node left = queue.poll();
+            Node right = queue.poll();
+            queue.add(new Node(left, right));
+        }
+        assert queue.size() == 1;
+        Node root = queue.poll();
+
+        // Обходим дерево и строим коды
+        dfs(root, "");
+
+        // Вычисляем количество различных вершин на ярусах
+        Map<Integer, HuffmanLevel> levels = new TreeMap<>();
+        // Обходим дерево
+        level(root, 0, levels);
+        // Вычисляем требуемое количество битов
+        levels.forEach((ordinal, level) -> {
+            int bits = (int) Math.ceil(Utils.log(level.getNumberOfNodes() + 1, 2));
+            level.setBits(bits);
+        });
+        result.setLevels(new ArrayList<>(levels.values()));
+
+        // Запись результатов шагов
+        List<HuffmanStepResult> stepResults = new ArrayList<>();
+        for (Node node : nodes) {
+            HuffmanStepResult stepResult = new HuffmanStepResult();
+            stepResult.setSymbol(node.label);
+            stepResult.setNumberOfOccurrence(node.priority);
+            stepResult.setCode(node.code);
+            stepResults.add(stepResult);
+        }
+        result.setStepResults(stepResults);
+
+        // Количество битов для передачи ярусов
+        int levelsCost = levelsCost(levels.values());
+        // Количество битов для передачи символов
+        int symbolsCost = symbolsCost(nodes);
+        // Количество битов для передачи дерева
+        int treeBits = levelsCost + symbolsCost;
+
+        // Количество битов для передачи сообщения
+        int messageCost = 0;
+        Map<String, String> codes = new HashMap<>();
+        for (Node node : nodes) {
+            codes.put(node.label, node.code);
+            messageCost += node.priority * node.code.length();
+        }
+
+        if (showDebugInfo) {
+            out.println("строка = " + input);
+            levels.forEach((ordinal, level) -> {
+                out.println(level.getOrdinal() + " " + level.getNumberOfNodes() + " " + level.getNumberOfLeafs() + " 0..." + level.getNumberOfNodes() + " " + level.getBits());
+            });
+            out.println("| Буква | Число появлений | Длинна кодового слова | Кодовое слово |");
+            out.println("|:-|:-|:-|:-|");
+            for (HuffmanStepResult stepResult : stepResults) {
+                out.println("|" + stepResult.getSymbol() + "|" + stepResult.getNumberOfOccurrence() + "|" + stepResult.getCode().length() + "|" + stepResult.getCode() + "|");
+            }
+            out.println("Количество бит для кодирования дерева = " + (nodes.size() * 2 - 1) + " + 8 * " + nodes.size() + " = " + (nodes.size() * 10 - 1));
+
+            out.println("стоимость кодирования сообщения = " + messageCost);
+            out.println("общая стоимость = " + (treeBits + messageCost));
+            out.println("стоимость кодирования регулярным кодом (без сжатия) = 8 * " + input.length() + " = " + (8 * input.length()));
+
+            StringBuilder sb = new StringBuilder();
+            for (char c : x) {
+                sb.append(codes.get(c + ""));
+            }
+            String output = sb.toString();
+            result.setOutput(output);
+        }
         return null;
     }
 
-    private void generateCodes(Node node, String currentCode) {
-        if (node.left == null) {
-            node.code = currentCode;
-        } else {
-            generateCodes(node.left, currentCode + "0");
-            if (node.right != null) {
-                generateCodes(node.right, currentCode + "1");
-            }
+    /**
+     * Вычисляет и возвращает количество битов для передачи ярусов
+     *
+     * @param levels ярусы
+     * @return количество битов
+     */
+    private int levelsCost(Iterable<HuffmanLevel> levels) {
+        int total = 0;
+        for (HuffmanLevel level : levels) {
+            total += level.getBits();
         }
+        return total;
     }
 
-    private void generateHuffmanCode(String s) {
-        Map<Character, Integer> count = new HashMap<>();
-        for (Character c : s.toCharArray()) {
-            Integer currentCount = count.get(c);
-            if (currentCount == null) {
-                currentCount = 0;
-            }
-            currentCount++;
-            count.put(c, currentCount);
+    /**
+     * Вычисляет и возвращает количество битов для передачи символов
+     *
+     * @param nodes узлы
+     * @return количество битов
+     */
+    private int symbolsCost(Iterable<Node> nodes) {
+        int total = 0;
+        Map<Integer, Integer> lengths = new TreeMap<>();
+        for (Node node : nodes) {
+            lengths.compute(node.code.length(), (key, oldValue) -> oldValue == null ? 1 : oldValue + 1);
         }
-        TreeSet<Node> allNodes = new TreeSet<>();
-        List<Node> nodesForCharacter = new ArrayList<>();
-        for (Map.Entry<Character, Integer> entry : count.entrySet()) {
-            Node node = new Node(entry.getKey(), entry.getValue());
-            nodesForCharacter.add(node);
-            allNodes.add(node);
+        int numberOfSymbols = M;
+        for (Map.Entry<Integer, Integer> entry : lengths.entrySet()) {
+            int numberOfLevelSymbols = entry.getValue();
+            BigInteger temp = Utils.binomialCoefficient(numberOfSymbols, numberOfLevelSymbols);
+            int bits = (int) Math.ceil(Utils.log(temp.doubleValue(), 2));
+            total += bits;
+            numberOfSymbols -= numberOfLevelSymbols;
         }
-        while (allNodes.size() > 1) {
-            Node left = allNodes.pollFirst();
-            Node right = allNodes.pollFirst();
-            allNodes.add(new Node(left, right));
-        }
-        Node root = allNodes.pollFirst();
-        if (root.left == null) {
-            root = new Node(root, null);
-        }
-        generateCodes(root, "");
-        out.println("строка = " + s);
-        out.println("| Буква | Число появлений | Длинна кодового слова | Кодовое слово |");
-        out.println("|:-|:-|:-|:-|");
-        Collections.sort(nodesForCharacter);
-        Collections.reverse(nodesForCharacter);
-        for (Node node : nodesForCharacter) {
-            char c = node.c;
-            if (c == ' ') {
-                c = '_';
-            }
-            out.println("|" + c + "|" + node.count + "|" + node.code.length() + "|" + node.code + "|");
-        }
-        out.println("Количество бит для кодирования дерева = " + (nodesForCharacter.size() * 2 - 1) + " + 8 * " +
-                nodesForCharacter.size() + " = " + (nodesForCharacter.size() * 10 - 1));
-        int messageCost = 0;
-        Map<Character, String> codes = new HashMap<>();
-        for (Node node : nodesForCharacter) {
-            codes.put(node.c, node.code);
-            messageCost += node.count * node.code.length();
-        }
-        int treeCost = nodesForCharacter.size() * 10 - 1;
-        out.println("стоимость кодирования сообщения = " + messageCost);
-        out.println("общая стоимость = " + (treeCost + messageCost));
-        out.println("стоимость кодирования регулярным кодом (без сжатия) = 8 * " + s.length() + " = " + (8 * s.length()));
-        out.println();
+        return total;
     }
 
-    private static class Node implements Comparable<Node> {
+    /**
+     * Обходит дерево и заполняет ярусы
+     *
+     * @param current узел
+     * @param k номер яруса
+     * @param levels ярусы
+     */
+    private void level(Node current, int k, Map<Integer, HuffmanLevel> levels) {
+        if (current == null) {
+            return;
+        }
+        HuffmanLevel level = levels.computeIfAbsent(k, HuffmanLevel::new);
+        level.setNumberOfNodes(level.getNumberOfNodes() + 1);
+        if (current.isLeaf()) {
+            level.setNumberOfLeafs(level.getNumberOfLeafs() + 1);
+        }
+        level(current.left, k + 1, levels);
+        level(current.right, k + 1, levels);
+    }
+
+    /**
+     * Вычисляет и возвращает композицию
+     *
+     * @param x последовательность
+     * @return композиция
+     */
+    private Map<Character, Integer> tau(char[] x) {
+        Map<Character, Integer> tau = new HashMap<>();
+        for (Character c : x) {
+            tau.compute(c, (key, oldValue) -> oldValue == null ? 1 : oldValue + 1);
+        }
+        return tau;
+    }
+
+    /**
+     * Обходит дерево и вычисляет коды
+     *
+     * @param current текущий узел
+     * @param path    текущий путь
+     */
+    private void dfs(Node current, String path) {
+        if (current.isLeaf()) {
+            current.code = path;
+            return;
+        }
+        dfs(current.left, path + "0");
+        dfs(current.right, path + "1");
+    }
+
+    @Data
+    private static class Node {
         private Node left;
         private Node right;
-        private char c;
-        private int count;
-        private int nodeId;
+        private String label = "";
+        private int priority;
         private String code;
 
-        Node(Node left, Node right) {
-            Objects.requireNonNull(left);
-            Objects.requireNonNull(right);
+        public Node(Node left, Node right) {
             this.left = left;
             this.right = right;
-            this.count = left.count + right.count;
-            this.nodeId = totalNodes++;
+            this.priority = left.priority + right.priority;
         }
 
-        Node(char c, int count) {
-            this.c = c;
-            this.count = count;
-            this.nodeId = totalNodes++;
+        public Node(String label, int priority) {
+            this.label = label;
+            this.priority = priority;
         }
 
-        @Override
-        public int compareTo(Node o) {
-            if (count == o.count) {
-                return Integer.compare(nodeId, o.nodeId);
-            }
-            return Integer.compare(count, o.count);
+        public boolean isLeaf() {
+            return !Objects.equals(label, "");
         }
     }
 

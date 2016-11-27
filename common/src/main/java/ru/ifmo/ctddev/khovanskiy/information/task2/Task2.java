@@ -172,12 +172,12 @@ public class Task2 implements Runnable {
         return label;
     }
 
-    private Map<String, String> buildCodes(Map<String, Double> probabilities) {
+    public static Map<String, String> buildCodes(Map<String, Double> tau) {
         ComparatorChain<Node> comparatorChain = new ComparatorChain<>();
-        comparatorChain.addComparator((o1, o2) -> Double.compare(o1.priority, o2.priority));
-        comparatorChain.addComparator((o1, o2) -> o1.label.compareTo(o2.label));
+        comparatorChain.addComparator(Comparator.comparingDouble(o -> o.priority));
+        comparatorChain.addComparator(Comparator.comparing(o -> o.label));
         PriorityQueue<Node> nodes = new PriorityQueue<>(comparatorChain);
-        probabilities.forEach((label, priority) -> {
+        tau.forEach((label, priority) -> {
             if (priority > 0) {
                 nodes.add(new Node(label, priority));
             }
@@ -194,7 +194,7 @@ public class Task2 implements Runnable {
         return codes;
     }
 
-    private void dfs(Node current, String path, Map<String, String> codes) {
+    private static void dfs(Node current, String path, Map<String, String> codes) {
         if (current.isLeaf()) {
             codes.put(current.label, path);
             return;
@@ -204,7 +204,7 @@ public class Task2 implements Runnable {
     }
 
     @Data
-    private class Node {
+    private static class Node {
         String label = "";
         Node left;
         Node right;
