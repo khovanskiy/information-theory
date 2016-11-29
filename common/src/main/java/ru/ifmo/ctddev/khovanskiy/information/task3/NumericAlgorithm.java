@@ -3,7 +3,6 @@ package ru.ifmo.ctddev.khovanskiy.information.task3;
 import lombok.extern.slf4j.Slf4j;
 import ru.ifmo.ctddev.khovanskiy.information.util.Utils;
 
-import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.util.*;
 
@@ -11,10 +10,10 @@ import java.util.*;
 public class NumericAlgorithm extends Algorithm {
 
     @Override
-    public NumericResult encode(String input, boolean showDebugInfo) {
+    public NumericResult encode(String source1, String source2, boolean showDebugInfo) {
         NumericResult result = new NumericResult();
-        input = Utils.convertToAscii(input);
-        result.setInput(input);
+        String input = Utils.convertToAscii(source1);
+        result.setInput(source2);
         char[] x = input.toCharArray();
         int n = x.length;
 
@@ -65,19 +64,19 @@ public class NumericAlgorithm extends Algorithm {
         String output = Utils.convertIntListToString(code);
         result.setOutput(output);
 
-        if (log.isInfoEnabled()) {
-            out.println("строка = " + input);
-            out.println("количество композиций = " + numberOfCompositions);
-            out.println("номер текущей композиции = " + positionOfComposition);
-            out.println("количество битов для передачи композиции = " + l1);
+        /*if (log.isInfoEnabled()) {
+            log.info("строка = " + input);
+            log.info("количество композиций = " + numberOfCompositions);
+            log.info("номер текущей композиции = " + positionOfComposition);
+            log.info("количество битов для передачи композиции = " + l1);
 
-            out.println("total number of sequences = " + numberOfSequences);
-            out.println("our sequence has number = " + positionOfSequence);
-            out.println("bits for sequence = " + l2);
-            out.println("total amount of bits = " + (l1 + l2));
+            log.info("total number of sequences = " + numberOfSequences);
+            log.info("our sequence has number = " + positionOfSequence);
+            log.info("bits for sequence = " + l2);
+            log.info("total amount of bits = " + (l1 + l2));
 
-            out.println("encoded string = " + output);
-        }
+            log.info("encoded string = " + output);
+        }*/
         return result;
     }
 

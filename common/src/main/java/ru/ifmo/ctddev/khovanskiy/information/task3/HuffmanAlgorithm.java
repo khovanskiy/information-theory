@@ -15,10 +15,10 @@ import java.util.*;
 public class HuffmanAlgorithm extends Algorithm {
 
     @Override
-    public HuffmanResult encode(String input, boolean showDebugInfo) {
+    public HuffmanResult encode(String source1, String source2, boolean showDebugInfo) {
         HuffmanResult result = new HuffmanResult();
-        input = Utils.convertToAscii(input);
-        result.setInput(input);
+        String input = source2;
+        result.setInput(source2);
         char[] x = input.toCharArray();
 
         // Композиция
@@ -87,7 +87,14 @@ public class HuffmanAlgorithm extends Algorithm {
         }
         result.setMessageCost(messageCost);
 
-        if (showDebugInfo) {
+        StringBuilder sb = new StringBuilder();
+        for (char c : x) {
+            sb.append(codes.get(c + ""));
+        }
+        String output = sb.toString();
+        result.setOutput(output);
+
+        /*if (showDebugInfo) {
             out.println("строка = " + input);
             levels.forEach((ordinal, level) -> {
                 out.println(level.getOrdinal() + " " + level.getNumberOfNodes() + " " + level.getNumberOfLeafs() + " 0..." + level.getNumberOfNodes() + " " + level.getBits());
@@ -101,14 +108,7 @@ public class HuffmanAlgorithm extends Algorithm {
             out.println("стоимость кодирования сообщения = " + messageCost);
             out.println("общая стоимость = " + (treeCost + messageCost));
             out.println("стоимость кодирования регулярным кодом (без сжатия) = 8 * " + input.length() + " = " + (8 * input.length()));
-
-            StringBuilder sb = new StringBuilder();
-            for (char c : x) {
-                sb.append(codes.get(c + ""));
-            }
-            String output = sb.toString();
-            result.setOutput(output);
-        }
+        }*/
         return result;
     }
 

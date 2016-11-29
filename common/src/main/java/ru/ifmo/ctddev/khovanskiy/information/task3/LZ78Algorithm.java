@@ -15,11 +15,12 @@ import java.util.TreeMap;
 public class LZ78Algorithm extends Algorithm {
 
     @Override
-    public LZ78Result encode(String input, boolean showDebugInfo) {
+    public LZ78Result encode(String source1, String source2, boolean showDebugInfo) {
         LZ78Result result = new LZ78Result();
-        input = Utils.convertToAscii(input);
-        result.setInput(input);
+        String input = Utils.convertToAscii(source1);
+        result.setInput(source2);
 
+        char[] sx = source2.toCharArray();
         char[] x = input.toCharArray();
         int n = x.length;
 
@@ -52,10 +53,10 @@ public class LZ78Algorithm extends Algorithm {
 
             LZ78StepResult stepResult = new LZ78StepResult();
             stepResult.setOrdinal(ordinal);
-            String sequence = input.substring(N, N + l);
+            String sequence = source2.substring(N, N + l);
             stepResult.setSequence(sequence);
             stepResult.setWordNumber(targetWordNumber);
-            String c = Utils.convertIntToBinaryString(targetWordNumber, Math.max(0, dictionary.size() - 2)) + (targetWordNumber == 0 ? "bin(" + x[N + l - 1] + ")" : "");
+            String c = Utils.convertIntToBinaryString(targetWordNumber, Math.max(0, dictionary.size() - 2)) + (targetWordNumber == 0 ? "bin(" + sx[N + l - 1] + ")" : "");
             stepResult.setCode(c);
             int bits = Utils.getBitsCount(Math.max(0, dictionary.size() - 2)) + (targetWordNumber == 0 ? Utils.charTo01List(x[N + l - 1]).size() : 0);
             stepResult.setBits(bits);

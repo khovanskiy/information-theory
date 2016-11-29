@@ -1,9 +1,11 @@
+<#-- @ftlvariable name="no" type="ru.ifmo.ctddev.khovanskiy.information.task3.NoCodingResult" -->
 <#-- @ftlvariable name="huffman" type="ru.ifmo.ctddev.khovanskiy.information.task3.HuffmanResult" -->
 <#-- @ftlvariable name="adaptive" type="ru.ifmo.ctddev.khovanskiy.information.task3.AdaptiveArithmeticResult" -->
 <#-- @ftlvariable name="numeric" type="ru.ifmo.ctddev.khovanskiy.information.task3.NumericResult" -->
 <#-- @ftlvariable name="lz77" type="ru.ifmo.ctddev.khovanskiy.information.task3.LZ77Result" -->
 <#-- @ftlvariable name="lz78" type="ru.ifmo.ctddev.khovanskiy.information.task3.LZ78Result" -->
 <#-- @ftlvariable name="ppma" type="ru.ifmo.ctddev.khovanskiy.information.task3.PPMAResult" -->
+<#-- @ftlvariable name="distances" type="ru.ifmo.ctddev.khovanskiy.information.task3.DistancesResult" -->
 <!DOCTYPE html>
 <html>
 <head>
@@ -22,6 +24,16 @@
     <h1>Отчет по заданию 3
         <small>Хованский Виктор Сергеевич, группа М4136с</small>
     </h1>
+    <div class="alert alert-warning">
+        Исходная строка конвертировалась из UTF-8 в ASCII кодировку, поэтому возможны различия в отображении, так как в исходной строке символы могут быть на разных позициях.
+    </div>
+<#if no??>
+    <h2>Без кодирования</h2>
+    <div class="alert alert-warning">Исходная строка = ${no.input}</div>
+    <div class="alert alert-info">
+        Итого = ${no.bits} бит
+    </div>
+</#if>
 <#if huffman??>
     <h2>Алгоритм Хаффмана</h2>
     <div class="alert alert-warning">Исходная строка = ${huffman.input}</div>
@@ -95,7 +107,7 @@
         </#list>
     </table>
     <div class="alert alert-info">
-        Итого = ${adaptive.bits} бит
+        Итого = -|log(G)| = ${adaptive.bits} бит (Количество разрядов после запятой двоичного представления числа F)
     </div>
 </#if>
 <#if numeric??>
@@ -207,6 +219,24 @@
             <td colspan="5">Итого</td>
             <td>${ppma.bits}</td>
         </tr>
+    </table>
+</#if>
+<#if distances??>
+    <h2>Кодирование расстояний</h2>
+    <div class="alert alert-warning">Исходная строка = ${distances.input}</div>
+    <table class="table table-bordered">
+        <tr>
+            <th>i</th>
+            <th>Последовательность</th>
+            <th><span class="tex" data-value="y_i(y_{i,max})">y_i(y_{i,max})</span></th>
+        </tr>
+        <#list distances.stepResults as step>
+            <tr>
+                <td>${step.ordinal}</td>
+                <td>${step.sequence}</td>
+                <td>${step.y}</td>
+            </tr>
+        </#list>
     </table>
 </#if>
     <script>

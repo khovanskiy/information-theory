@@ -16,11 +16,12 @@ import java.util.List;
 public class AdaptiveArithmeticAlgorithm extends Algorithm {
 
     @Override
-    public AdaptiveArithmeticResult encode(String input, boolean showDebugInfo) {
+    public AdaptiveArithmeticResult encode(String source1, String source2, boolean showDebugInfo) {
         AdaptiveArithmeticResult result = new AdaptiveArithmeticResult();
-        input = Utils.convertToAscii(input);
-        result.setInput(input);
+        String input = Utils.convertToAscii(source1);
+        result.setInput(source2);
 
+        char[] xs = source2.toCharArray();
         char[] x = input.toCharArray();
         int n = input.length();
 
@@ -62,7 +63,7 @@ public class AdaptiveArithmeticAlgorithm extends Algorithm {
             // Запись результата шага
             AdaptiveArithmeticStepResult stepResult = new AdaptiveArithmeticStepResult();
             stepResult.setOrdinal(i);
-            stepResult.setX(x[i]);
+            stepResult.setX(xs[i]);
             stepResult.setP(p[x[i]]);
             stepResult.setQ(q[x[i]]);
             stepResult.setF(F);
@@ -81,7 +82,7 @@ public class AdaptiveArithmeticAlgorithm extends Algorithm {
         String output = Utils.convertIntListToString(code);
         result.setOutput(output);
 
-        if (showDebugInfo) {
+        /*if (showDebugInfo) {
             out.println("| Шаг | x | p(x) | q(x) | F | G | ");
             out.println("|:-|:-|:-|:-|:-|:-|");
             for (AdaptiveArithmeticStepResult stepResult : stepResults) {
@@ -94,7 +95,7 @@ public class AdaptiveArithmeticAlgorithm extends Algorithm {
             }
             out.println("Итого = " + l + " бит");
             out.println("Искомый код = " + output);
-        }
+        }*/
 
         return result;
     }

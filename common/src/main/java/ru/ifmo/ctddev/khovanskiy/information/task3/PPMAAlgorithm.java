@@ -18,22 +18,6 @@ public class PPMAAlgorithm extends Algorithm {
      */
     public final static int D = 5;
 
-    private static String genFraction(double x) {
-        final int MAX_DENOM = 100000;
-        final double eps = 1e-9;
-        int bestDenom = 1;
-        for (int denom = 1; denom <= MAX_DENOM; denom++) {
-            if (Math.abs(denom * x - Math.round(denom * x)) <= eps) {
-                bestDenom = denom;
-            }
-        }
-        int bestNom = (int) Math.round(bestDenom * x);
-        int g = gcd(bestNom, bestDenom);
-        bestDenom /= g;
-        bestNom /= g;
-        return bestDenom == 1 ? Integer.toString(bestNom) : Integer.toString(bestNom) + "/" + Integer.toString(bestDenom);
-    }
-
     /**
      * Вычисляет и возвращает наибольший общий делитель
      *
@@ -43,6 +27,13 @@ public class PPMAAlgorithm extends Algorithm {
         return x == 0 ? y : gcd(y % x, x);
     }
 
+    /**
+     * Вычисляет и возвращает количество вхождений подстроки в в строку
+     *
+     * @param s строка
+     * @param t подстрока
+     * @return количество вхождений
+     */
     private int countOccurrences(String s, String t) {
         int total = 0;
         int sl = s.length();
@@ -56,9 +47,9 @@ public class PPMAAlgorithm extends Algorithm {
     }
 
     @Override
-    public AlgorithmResult encode(String input, boolean showDebugInfo) {
+    public AlgorithmResult encode(String source1, String source2, boolean showDebugInfo) {
         PPMAResult result = new PPMAResult();
-        input = Utils.convertToAscii(input);
+        String input = source2;
         result.setInput(input);
         char[] x = input.toCharArray();
         int n = x.length;
@@ -69,7 +60,7 @@ public class PPMAAlgorithm extends Algorithm {
         log.info("Шаг\tБуква\tКонтекст\ttau_s\tpr_esc\tpr_symbol");
         List<PPMAStepResult> stepResults = new ArrayList<>();
         double prEsc = 0;
-        double prSymbol = 0;
+        double symb = 0;
         for (int i = 0; i < n; ++i) {
             PPMAStepResult sr = new PPMAStepResult();
             sr.setOrdinal(i);
@@ -102,7 +93,7 @@ public class PPMAAlgorithm extends Algorithm {
             if (i == 0) {
                 tau = "0";
             }
-            double tmpPrEsc = 1;
+            double esc = 1;
             double tmpPrSymbol = 1;
             HashSet<Character> available = new HashSet<>();
             while (d > 0) {
@@ -118,7 +109,7 @@ public class PPMAAlgorithm extends Algorithm {
                         available.add(was.charAt(startPos + context.length()));
                     }
                 }
-                tmpPrEsc *= countOccurrences(was.substring(0, was.length() - 1), context) + 1 - remTmp;
+                esc *= countOccurrences(was.substring(0, was.length() - 1), context) + 1 - remTmp;
                 context = context.substring(1);
                 // Уменьшаем длину контекста
                 d--;
@@ -143,39 +134,48 @@ public class PPMAAlgorithm extends Algorithm {
                     int cntTotal = was.length();
                     tmpPrSymbol *= (cntTotal + 1.0 - rem) / cntCurrentLetter;
                 } else {
-                    tmpPrEsc *= was.length() + 1 - rem; // esc-symbol
+                    esc *= was.length() + 1 - rem; // esc-symbol
                     tmpPrSymbol *= unused--;
                 }
             }
 
             String pescs;
-            if (tmpPrEsc != 1) {
-                pescs = genFraction(1 / tmpPrEsc);
+            if (esc != 1) {
+                pescs = fraction(1 / esc);
             } else {
                 pescs = " ";
             }
             sr.setPescs(pescs);
 
-            String pas = genFraction(1 / tmpPrSymbol);
+            String pas = fraction(1 / tmpPrSymbol);
             sr.setPac(pas);
 
             System.out.println(pescs + "*****" + pas);
-            prEsc += Utils.log(tmpPrEsc, 2);
-            prSymbol += Utils.log(tmpPrSymbol, 2);
+            prEsc += Utils.log(esc, 2);
+            symb += Utils.log(tmpPrSymbol, 2);
             was += input.charAt(i);
             stepResults.add(sr);
         }
         result.setStepResults(stepResults);
-        int bits = ((int) Math.ceil(prEsc + prSymbol) + 1);
+        int bits = ((int) Math.ceil(prEsc + symb) + 1);
         result.setBits(bits);
-        System.out.printf(Locale.US, "Итого = up[ %.4f + %.4f ] + 1 = %d бит\n\n", prEsc, prSymbol, result.getBits());
+        System.out.printf(Locale.US, "Итого = up[ %.4f + %.4f ] + 1 = %d бит\n\n", prEsc, symb, result.getBits());
         return result;
     }
 
-    /*public static void main(String[] args) {
-        System.out.println("PPMA кодирование");
-        for (final String proverb : proverbs) {
-            encodePPMA(proverb);
+    private static String fraction(double x) {
+        final int MAX = 100000;
+        final double eps = 1e-9;
+        int bestDenom = 1;
+        for (int denom = 1; denom <= MAX; denom++) {
+            if (Math.abs(denom * x - Math.round(denom * x)) <= eps) {
+                bestDenom = denom;
+            }
         }
-    }*/
+        int bestNom = (int) Math.round(bestDenom * x);
+        int g = gcd(bestNom, bestDenom);
+        bestDenom /= g;
+        bestNom /= g;
+        return bestDenom == 1 ? Integer.toString(bestNom) : Integer.toString(bestNom) + "/" + Integer.toString(bestDenom);
+    }
 }

@@ -15,424 +15,262 @@
     <h1>Отчет по заданию 3
         <small>Хованский Виктор Сергеевич, группа М4136с</small>
     </h1>
-    <h2>Алгоритм PPMA</h2>
-    <div class="alert alert-warning">Исходная строка = IF_WE_CANNOT_DO_AS_WE_WOULD_WE_SHOULD_DO_AS_WE_CAN</div>
+    <div class="alert alert-warning">
+        Исходная строка конвертировалась из UTF-8 в ASCII кодировку, поэтому возможны различия в отображении, так как в исходной строке символы могут быть на разных позициях.
+    </div>
+    <h2>Кодирования расстояний</h2>
+    <div class="alert alert-warning">Исходная строка = Блажен, кто смолоду был молод, блажен, кто вовремя созрел.</div>
     <table class="table table-bordered">
         <tr>
-            <th rowspan="2" style="vertical-align: middle">Шаг</th>
-            <th rowspan="2" style="vertical-align: middle">Буква</th>
-            <th rowspan="2" style="vertical-align: middle">Контекст</th>
-            <th rowspan="2" style="vertical-align: middle"><span class="tex" data-value="\tau_t(s)">tau_t(s)</span></th>
-            <th colspan="2" style="text-align: center;">PPMA</th>
-        </tr>
-        <tr>
-            <th><span class="tex" data-value="p_t(esc|s)">p_t(esc|s)</span></th>
-            <th><span class="tex" data-value="p_t(a|c)">p_t(ac)</span></th>
+            <th>i</th>
+            <th>Последовательность</th>
+            <th><span class="tex" data-value="y_i(y_{i,max})">y_i(y_{i,max})</span></th>
         </tr>
             <tr>
                 <td>0</td>
-                <td>I</td>
-                <td></td>
+                <td><span style="background-color:yellow">Б</span>лажен, кто?см???ду?бы?????????????????????в??р??я???з???.</td>
                 <td>0</td>
-                <td> </td>
-                <td>1/256</td>
             </tr>
             <tr>
                 <td>1</td>
-                <td>F</td>
-                <td></td>
-                <td>1</td>
-                <td>1/2</td>
-                <td>1/255</td>
+                <td>Б<span style="background-color:yellow">л</span>ажен, кто?см?<span style="background-color:yellow">?</span>?ду?бы?????????????????????в??р??я???з???.</td>
+                <td>3(36)</td>
             </tr>
             <tr>
                 <td>2</td>
-                <td>_</td>
-                <td></td>
-                <td>2</td>
-                <td>1/3</td>
-                <td>1/254</td>
+                <td>Бл<span style="background-color:yellow">а</span>жен, кто?см?л?ду?бы???????????<span style="background-color:yellow">?</span>?????????в??р??я???з???.</td>
+                <td>16(35)</td>
             </tr>
             <tr>
                 <td>3</td>
-                <td>W</td>
-                <td></td>
-                <td>3</td>
-                <td>1/4</td>
-                <td>1/253</td>
+                <td>Бла<span style="background-color:yellow">ж</span>ен, кто?см?л?ду?бы???????????а<span style="background-color:yellow">?</span>????????в??р??я???з???.</td>
+                <td>16(34)</td>
             </tr>
             <tr>
                 <td>4</td>
-                <td>E</td>
-                <td></td>
-                <td>4</td>
-                <td>1/5</td>
-                <td>1/252</td>
+                <td>Блаж<span style="background-color:yellow">е</span>н, кто?см?л?ду?бы???????????аж<span style="background-color:yellow">?</span>???????в??р??я???з???.</td>
+                <td>16(33)</td>
             </tr>
             <tr>
                 <td>5</td>
-                <td>_</td>
-                <td></td>
-                <td>5</td>
-                <td> </td>
-                <td>1/6</td>
+                <td>Блаже<span style="background-color:yellow">н</span>, кто?см?л?ду?бы???????????аже<span style="background-color:yellow">?</span>??????в??р??я???з???.</td>
+                <td>16(32)</td>
             </tr>
             <tr>
                 <td>6</td>
-                <td>C</td>
-                <td>_</td>
-                <td>1,6</td>
-                <td>1/12</td>
-                <td>1/251</td>
+                <td>Блажен<span style="background-color:yellow">,</span> кто?см?л?ду?бы???????<span style="background-color:yellow">?</span>???ажен??????в??р??я???з???.</td>
+                <td>12(31)</td>
             </tr>
             <tr>
                 <td>7</td>
-                <td>A</td>
-                <td></td>
-                <td>7</td>
-                <td>1/8</td>
-                <td>1/250</td>
+                <td>Блажен,<span style="background-color:yellow"> </span>кто<span style="background-color:yellow">?</span>см?л?ду?бы???????,???ажен??????в??р??я???з???.</td>
+                <td>1(30)</td>
             </tr>
             <tr>
                 <td>8</td>
-                <td>N</td>
-                <td></td>
-                <td>8</td>
-                <td>1/9</td>
-                <td>1/249</td>
+                <td>Блажен, <span style="background-color:yellow">к</span>то см?л?ду?бы???????,???ажен??<span style="background-color:yellow">?</span>???в??р??я???з???.</td>
+                <td>16(29)</td>
             </tr>
             <tr>
                 <td>9</td>
-                <td>N</td>
-                <td></td>
-                <td>9</td>
-                <td> </td>
-                <td>1/10</td>
+                <td>Блажен, к<span style="background-color:yellow">т</span>о см?л?ду?бы???????,???ажен??к<span style="background-color:yellow">?</span>??в??р??я???з???.</td>
+                <td>16(28)</td>
             </tr>
             <tr>
                 <td>10</td>
-                <td>O</td>
-                <td>N</td>
-                <td>1,10</td>
-                <td>1/18</td>
-                <td>1/248</td>
+                <td>Блажен, кт<span style="background-color:yellow">о</span> см<span style="background-color:yellow">?</span>л?ду?бы???????,???ажен??кт??в??р??я???з???.</td>
+                <td>1(27)</td>
             </tr>
             <tr>
                 <td>11</td>
-                <td>T</td>
-                <td></td>
-                <td>11</td>
-                <td>1/12</td>
-                <td>1/247</td>
+                <td>Блажен, кто<span style="background-color:yellow"> </span>смол?ду<span style="background-color:yellow">?</span>бы???????,???ажен??кт??в??р??я???з???.</td>
+                <td>2(26)</td>
             </tr>
             <tr>
                 <td>12</td>
-                <td>_</td>
-                <td></td>
-                <td>12</td>
-                <td> </td>
-                <td>2/13</td>
+                <td>Блажен, кто <span style="background-color:yellow">с</span>мол?ду бы???????,???ажен??кт??в??р??я?<span style="background-color:yellow">?</span>?з???.</td>
+                <td>21(25)</td>
             </tr>
             <tr>
                 <td>13</td>
-                <td>D</td>
-                <td>_</td>
-                <td>2,13</td>
-                <td>1/36</td>
-                <td>1/246</td>
+                <td>Блажен, кто с<span style="background-color:yellow">м</span>ол?ду бы??<span style="background-color:yellow">?</span>????,???ажен??кт??в??р??я?с?з???.</td>
+                <td>4(24)</td>
             </tr>
             <tr>
                 <td>14</td>
-                <td>O</td>
-                <td></td>
-                <td>14</td>
-                <td> </td>
-                <td>1/15</td>
+                <td>Блажен, кто см<span style="background-color:yellow">о</span>л<span style="background-color:yellow">?</span>ду бы??м????,???ажен??кт??в??р??я?с?з???.</td>
+                <td>1(23)</td>
             </tr>
             <tr>
                 <td>15</td>
-                <td>_</td>
-                <td>O</td>
-                <td>1,15</td>
-                <td>1/2</td>
-                <td>1/5</td>
+                <td>Блажен, кто смо<span style="background-color:yellow">л</span>оду бы<span style="background-color:yellow">?</span>?м????,???ажен??кт??в??р??я?с?з???.</td>
+                <td>1(22)</td>
             </tr>
             <tr>
                 <td>16</td>
-                <td>A</td>
-                <td>_</td>
-                <td>3,16</td>
-                <td>1/4</td>
-                <td>1/14</td>
+                <td>Блажен, кто смол<span style="background-color:yellow">о</span>ду был?м<span style="background-color:yellow">?</span>???,???ажен??кт??в??р??я?с?з???.</td>
+                <td>2(21)</td>
             </tr>
             <tr>
                 <td>17</td>
-                <td>S</td>
-                <td>A</td>
-                <td>1,17</td>
-                <td>1/32</td>
-                <td>1/245</td>
+                <td>Блажен, кто смоло<span style="background-color:yellow">д</span>у был?мо??<span style="background-color:yellow">?</span>,???ажен??кт??в??р??я?с?з???.</td>
+                <td>4(20)</td>
             </tr>
             <tr>
                 <td>18</td>
-                <td>_</td>
-                <td></td>
-                <td>18</td>
-                <td> </td>
-                <td>4/19</td>
+                <td>Блажен, кто смолод<span style="background-color:yellow">у</span> был?мо??д,???ажен??кт??в??р??я?с?з???.</td>
+                <td>0</td>
             </tr>
             <tr>
                 <td>19</td>
-                <td>W</td>
-                <td>_</td>
-                <td>4</td>
-                <td> </td>
-                <td>1/5</td>
+                <td>Блажен, кто смолоду<span style="background-color:yellow"> </span>был<span style="background-color:yellow">?</span>мо??д,???ажен??кт??в??р??я?с?з???.</td>
+                <td>1(19)</td>
             </tr>
             <tr>
                 <td>20</td>
-                <td>E</td>
-                <td>_W</td>
-                <td>1</td>
-                <td> </td>
-                <td>1/2</td>
+                <td>Блажен, кто смолоду <span style="background-color:yellow">б</span>ыл мо??д,?<span style="background-color:yellow">?</span>?ажен??кт??в??р??я?с?з???.</td>
+                <td>4(18)</td>
             </tr>
             <tr>
                 <td>21</td>
-                <td>_</td>
-                <td>_WE</td>
-                <td>1</td>
-                <td> </td>
-                <td>1/2</td>
+                <td>Блажен, кто смолоду б<span style="background-color:yellow">ы</span>л мо??д,?б?ажен??кт??в??р??я?с?з???.</td>
+                <td>0</td>
             </tr>
             <tr>
                 <td>22</td>
-                <td>W</td>
-                <td>_WE_</td>
-                <td>1,1,1,5</td>
-                <td>1/2</td>
-                <td>2/5</td>
+                <td>Блажен, кто смолоду бы<span style="background-color:yellow">л</span> мо<span style="background-color:yellow">?</span>?д,?б?ажен??кт??в??р??я?с?з???.</td>
+                <td>1(17)</td>
             </tr>
             <tr>
                 <td>23</td>
-                <td>O</td>
-                <td>_W</td>
-                <td>2,2,23</td>
-                <td>1/3</td>
-                <td>1/11</td>
+                <td>Блажен, кто смолоду был<span style="background-color:yellow"> </span>мол?д,<span style="background-color:yellow">?</span>б?ажен??кт??в??р??я?с?з???.</td>
+                <td>2(16)</td>
             </tr>
             <tr>
                 <td>24</td>
-                <td>U</td>
-                <td>O</td>
-                <td>2,24</td>
-                <td>1/54</td>
-                <td>1/244</td>
+                <td>Блажен, кто смолоду был <span style="background-color:yellow">м</span>ол?д, б?ажен??кт??в??р?<span style="background-color:yellow">?</span>я?с?з???.</td>
+                <td>10(15)</td>
             </tr>
             <tr>
                 <td>25</td>
-                <td>L</td>
-                <td></td>
-                <td>25</td>
-                <td>1/26</td>
-                <td>1/243</td>
+                <td>Блажен, кто смолоду был м<span style="background-color:yellow">о</span>л<span style="background-color:yellow">?</span>д, б?ажен??кт??в??р?мя?с?з???.</td>
+                <td>1(14)</td>
             </tr>
             <tr>
                 <td>26</td>
-                <td>D</td>
-                <td></td>
-                <td>26</td>
-                <td> </td>
-                <td>1/27</td>
+                <td>Блажен, кто смолоду был мо<span style="background-color:yellow">л</span>од, б<span style="background-color:yellow">?</span>ажен??кт??в??р?мя?с?з???.</td>
+                <td>1(13)</td>
             </tr>
             <tr>
                 <td>27</td>
-                <td>_</td>
-                <td>D</td>
-                <td>1,27</td>
-                <td>1/2</td>
-                <td>6/25</td>
+                <td>Блажен, кто смолоду был мол<span style="background-color:yellow">о</span>д, блажен??кт<span style="background-color:yellow">?</span>?в??р?мя?с?з???.</td>
+                <td>3(12)</td>
             </tr>
             <tr>
                 <td>28</td>
-                <td>W</td>
-                <td>_</td>
-                <td>6</td>
-                <td> </td>
-                <td>3/7</td>
+                <td>Блажен, кто смолоду был моло<span style="background-color:yellow">д</span>, блажен??кто?в??р?мя?с?з???.</td>
+                <td>0</td>
             </tr>
             <tr>
                 <td>29</td>
-                <td>E</td>
-                <td>_W</td>
-                <td>3</td>
-                <td> </td>
-                <td>1/2</td>
+                <td>Блажен, кто смолоду был молод<span style="background-color:yellow">,</span> блажен<span style="background-color:yellow">?</span>?кто?в??р?мя?с?з???.</td>
+                <td>1(11)</td>
             </tr>
             <tr>
                 <td>30</td>
-                <td>_</td>
-                <td>_WE</td>
-                <td>2</td>
-                <td> </td>
-                <td>2/3</td>
+                <td>Блажен, кто смолоду был молод,<span style="background-color:yellow"> </span>блажен,<span style="background-color:yellow">?</span>кто?в??р?мя?с?з???.</td>
+                <td>1(10)</td>
             </tr>
             <tr>
                 <td>31</td>
-                <td>S</td>
-                <td>_WE_</td>
-                <td>2,2,2,7,31</td>
-                <td>1/9</td>
-                <td>1/23</td>
+                <td>Блажен, кто смолоду был молод, <span style="background-color:yellow">б</span>лажен, кто?в??р?мя?с?з???.</td>
+                <td>0</td>
             </tr>
             <tr>
                 <td>32</td>
-                <td>H</td>
-                <td>S</td>
-                <td>1,32</td>
-                <td>1/50</td>
-                <td>1/242</td>
+                <td>Блажен, кто смолоду был молод, б<span style="background-color:yellow">л</span>ажен, кто?в??р?мя?с?з??<span style="background-color:yellow">?</span>.</td>
+                <td>9(9)</td>
             </tr>
             <tr>
                 <td>33</td>
-                <td>O</td>
-                <td></td>
-                <td>33</td>
-                <td> </td>
-                <td>3/34</td>
+                <td>Блажен, кто смолоду был молод, бл<span style="background-color:yellow">а</span>жен, кто?в??р?мя?с?з??л.</td>
+                <td>0</td>
             </tr>
             <tr>
                 <td>34</td>
-                <td>U</td>
-                <td>O</td>
-                <td>3</td>
-                <td> </td>
-                <td>1/4</td>
+                <td>Блажен, кто смолоду был молод, бла<span style="background-color:yellow">ж</span>ен, кто?в??р?мя?с?з??л.</td>
+                <td>0</td>
             </tr>
             <tr>
                 <td>35</td>
-                <td>L</td>
-                <td>OU</td>
-                <td>1</td>
-                <td> </td>
-                <td>1/2</td>
+                <td>Блажен, кто смолоду был молод, блаж<span style="background-color:yellow">е</span>н, кто?в??р<span style="background-color:yellow">?</span>мя?с?з??л.</td>
+                <td>4(8)</td>
             </tr>
             <tr>
                 <td>36</td>
-                <td>D</td>
-                <td>OUL</td>
-                <td>1</td>
-                <td> </td>
-                <td>1/2</td>
+                <td>Блажен, кто смолоду был молод, блаже<span style="background-color:yellow">н</span>, кто?в??ремя?с?з??л.</td>
+                <td>0</td>
             </tr>
             <tr>
                 <td>37</td>
-                <td>_</td>
-                <td>OULD</td>
-                <td>1</td>
-                <td> </td>
-                <td>1/2</td>
+                <td>Блажен, кто смолоду был молод, блажен<span style="background-color:yellow">,</span> кто?в??ремя?с?з??л.</td>
+                <td>0</td>
             </tr>
             <tr>
                 <td>38</td>
-                <td>D</td>
-                <td>OULD_</td>
-                <td>1,1,1,1,8</td>
-                <td>1/2</td>
-                <td>1/5</td>
+                <td>Блажен, кто смолоду был молод, блажен,<span style="background-color:yellow"> </span>кто<span style="background-color:yellow">?</span>в??ремя?с?з??л.</td>
+                <td>1(7)</td>
             </tr>
             <tr>
                 <td>39</td>
-                <td>O</td>
-                <td>_D</td>
-                <td>1</td>
-                <td> </td>
-                <td>1/2</td>
+                <td>Блажен, кто смолоду был молод, блажен, <span style="background-color:yellow">к</span>то в??ремя?с?з??л.</td>
+                <td>0</td>
             </tr>
             <tr>
                 <td>40</td>
-                <td>_</td>
-                <td>_DO</td>
-                <td>1</td>
-                <td> </td>
-                <td>1/2</td>
+                <td>Блажен, кто смолоду был молод, блажен, к<span style="background-color:yellow">т</span>о в??ремя?с?з??л.</td>
+                <td>0</td>
             </tr>
             <tr>
                 <td>41</td>
-                <td>A</td>
-                <td>_DO_</td>
-                <td>1</td>
-                <td> </td>
-                <td>1/2</td>
+                <td>Блажен, кто смолоду был молод, блажен, кт<span style="background-color:yellow">о</span> в<span style="background-color:yellow">?</span>?ремя?с?з??л.</td>
+                <td>1(6)</td>
             </tr>
             <tr>
                 <td>42</td>
-                <td>S</td>
-                <td>_DO_A</td>
-                <td>1</td>
-                <td> </td>
-                <td>1/2</td>
+                <td>Блажен, кто смолоду был молод, блажен, кто<span style="background-color:yellow"> </span>во?ремя<span style="background-color:yellow">?</span>с?з??л.</td>
+                <td>2(5)</td>
             </tr>
             <tr>
                 <td>43</td>
-                <td>_</td>
-                <td>DO_AS</td>
-                <td>1</td>
-                <td> </td>
-                <td>1/2</td>
+                <td>Блажен, кто смолоду был молод, блажен, кто <span style="background-color:yellow">в</span>о<span style="background-color:yellow">?</span>ремя с?з??л.</td>
+                <td>1(4)</td>
             </tr>
             <tr>
                 <td>44</td>
-                <td>W</td>
-                <td>O_AS_</td>
-                <td>1</td>
-                <td> </td>
-                <td>1/2</td>
+                <td>Блажен, кто смолоду был молод, блажен, кто в<span style="background-color:yellow">о</span>время с<span style="background-color:yellow">?</span>з??л.</td>
+                <td>1(3)</td>
             </tr>
             <tr>
                 <td>45</td>
-                <td>E</td>
-                <td>_AS_W</td>
-                <td>1</td>
-                <td> </td>
-                <td>1/2</td>
+                <td>Блажен, кто смолоду был молод, блажен, кто во<span style="background-color:yellow">в</span>ремя соз??л.</td>
+                <td>0</td>
             </tr>
             <tr>
                 <td>46</td>
-                <td>_</td>
-                <td>AS_WE</td>
-                <td>1</td>
-                <td> </td>
-                <td>1/2</td>
+                <td>Блажен, кто смолоду был молод, блажен, кто вов<span style="background-color:yellow">р</span>емя соз<span style="background-color:yellow">?</span>?л.</td>
+                <td>1(2)</td>
             </tr>
             <tr>
                 <td>47</td>
-                <td>C</td>
-                <td>S_WE_</td>
-                <td>1,3</td>
-                <td>1/2</td>
-                <td>1/3</td>
+                <td>Блажен, кто смолоду был молод, блажен, кто вовр<span style="background-color:yellow">е</span>мя созр<span style="background-color:yellow">?</span>л.</td>
+                <td>1(1)</td>
             </tr>
             <tr>
                 <td>48</td>
-                <td>A</td>
-                <td>_WE_C</td>
-                <td>1</td>
-                <td> </td>
-                <td>1/2</td>
+                <td>Блажен, кто смолоду был молод, блажен, кто вовре<span style="background-color:yellow">м</span>я созрел.</td>
+                <td></td>
             </tr>
-            <tr>
-                <td>49</td>
-                <td>N</td>
-                <td>WE_CA</td>
-                <td>1</td>
-                <td> </td>
-                <td>1/2</td>
-            </tr>
-        <tr>
-            <td colspan="5">Итого</td>
-            <td>250</td>
-        </tr>
     </table>
     <script>
         $("span.tex").each(function (index, element) {

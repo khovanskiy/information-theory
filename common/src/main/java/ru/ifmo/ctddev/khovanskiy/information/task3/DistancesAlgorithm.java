@@ -3,95 +3,108 @@ package ru.ifmo.ctddev.khovanskiy.information.task3;
 import lombok.extern.slf4j.Slf4j;
 import ru.ifmo.ctddev.khovanskiy.information.util.Utils;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * Victor Khovanskiy
  */
 @Slf4j
 public class DistancesAlgorithm extends Algorithm {
-    private static final String[] proverbs = {"CC######LLWWWWISNUUAANNHWDD#AAOOO#####OOEEDTESFDSE"};
 
-    public static void print(char[] seq, int[] indices) {
-        boolean[] aim = new boolean[seq.length];
-        for (int idx : indices)
-                aim[idx] = true;
-        for (int i = 0; i < seq.length; i++) {
+    /**
+     * Форматирует и возвращает последовательность в виде HTML-кода
+     *
+     * @param sequence  последовательность
+     * @param positions индексы
+     * @return строка
+     */
+    public static String formatSequence(char[] sequence, int[] positions) {
+        String buffer = "";
+        boolean[] aim = new boolean[sequence.length];
+        for (int idx : positions)
+            aim[idx] = true;
+        for (int i = 0; i < sequence.length; i++) {
             if (aim[i])
-                System.out.print("<span style=\"background-color:yellow\">");
-            System.out.print(seq[i]);
+                buffer += "<span style=\"background-color:yellow\">";
+            buffer += sequence[i];
             if (aim[i])
-                System.out.print("</span>");
+                buffer += "</span>";
         }
+        return buffer;
     }
 
     @Override
-    public AlgorithmResult encode(String input, boolean showDebugInfo) {
+    public AlgorithmResult encode(String source1, String source2, boolean showDebugInfo) {
         DistancesResult result = new DistancesResult();
-        input = Utils.convertToAscii(input);
-        result.setInput(input);
-        System.out.println("|i|Последовательность|y_i(y_i,max)|");
-        System.out.println("|:-|:-|:-|");
-        char[] seq = new char[input.length()];
-        Arrays.fill(seq, '?');
+        String input = source2;
+        result.setInput(source2);
+        char[] sequence = new char[input.length()];
+        Arrays.fill(sequence, '?');
         int filled = 0;
         for (int i = 0; i < input.length(); i++) {
             if (!input.substring(0, i).contains(input.substring(i, i + 1))) {
-                seq[i] = input.charAt(i);
+                sequence[i] = input.charAt(i);
                 filled++;
             }
         }
-        int currentIteration = 0;
-        int currentLetter = 0;
-        while (currentLetter < seq.length) {
-            System.out.print(currentIteration++ + "|");
+        List<DistancesStepResult> stepResults = new ArrayList<>();
+        int ordinal = 0;
+        int letter = 0;
+        while (letter < sequence.length) {
+            DistancesStepResult stepResult = new DistancesStepResult();
+            stepResult.setOrdinal(ordinal);
 
             int countQuestions = 0;
-            int st = currentLetter + 1;
-            while (st < input.length() && seq[st] == '?') {
+            int st = letter + 1;
+            while (st < input.length() && sequence[st] == '?') {
                 st++;
             }
-            int idx = input.substring(st).indexOf(input.substring(currentLetter, currentLetter + 1));
+            int idx = input.substring(st).indexOf(input.substring(letter, letter + 1));
+            String y = "";
             if (idx != -1) {
                 idx += st;
-                for (int i = st; i <= idx; i++)
-                    if (seq[i] == '?')
+                for (int i = st; i <= idx; ++i) {
+                    if (sequence[i] == '?') {
+                        ++countQuestions;
+                    }
+                }
+
+                String formattedSequence = formatSequence(sequence, new int[]{letter, idx});
+                stepResult.setSequence(formattedSequence);
+                y += countQuestions;
+
+                for (int i = idx + 1; i < sequence.length; i++)
+                    if (sequence[i] == '?')
                         countQuestions++;
+                y += "(" + countQuestions + ")";
 
-                print(seq, new int[]{currentLetter, idx});
-                System.out.print("|" + countQuestions);
-
-                for (int i = idx + 1; i < seq.length; i++)
-                    if (seq[i] == '?')
-                        countQuestions++;
-                System.out.println("(" + countQuestions + ")");
-
-                seq[idx] = seq[currentLetter];
+                sequence[idx] = sequence[letter];
                 filled++;
             } else {
-                print(seq, new int[]{currentLetter});
-                if (filled == seq.length) {
+                String formattedSequence = formatSequence(sequence, new int[]{letter});
+                stepResult.setSequence(formattedSequence);
+                if (filled == sequence.length) {
+                    stepResult.setY("");
+                    stepResults.add(stepResult);
                     break;
                 } else {
-                    System.out.print("|0");
+                    y = "0";
                 }
-                System.out.println("|");
             }
+            stepResult.setY(y);
 
-            int let = currentLetter + 1;
-            while (let < seq.length && seq[let] == '?') {
-                seq[let++] = seq[currentLetter];
+            int position = letter + 1;
+            while (position < sequence.length && sequence[position] == '?') {
+                sequence[position++] = sequence[letter];
                 filled++;
             }
-            currentLetter = let;
+            letter = position;
+            stepResults.add(stepResult);
+            ++ordinal;
         }
+        result.setStepResults(stepResults);
         return result;
     }
-
-    /*public static void main(String[] args) {
-        System.out.println("Кодирование расстояний");
-        for (final String proverb : proverbs) {
-            encode(proverb, true);
-        }
-    }*/
 }
