@@ -3,7 +3,7 @@ package ru.ifmo.ctddev.khovanskiy.information.task3;
 import lombok.Data;
 
 /**
- * victor
+ * Victor Khovanskiy
  */
 @Data
 public class LZ78StepResult {

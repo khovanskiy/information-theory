@@ -17,7 +17,7 @@ public class LZ77Algorithm extends Algorithm {
     private static final int W = 100;
 
     @Override
-    public AlgorithmResult encode(String source1, String source2, boolean showDebugInfo) {
+    public AlgorithmResult encode(String source1, String source2) {
         LZ77Result result = new LZ77Result();
         String input = Utils.convertToAscii(source1);
         result.setInput(source2);

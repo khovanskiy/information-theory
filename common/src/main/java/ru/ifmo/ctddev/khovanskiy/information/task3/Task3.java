@@ -26,10 +26,9 @@ public class Task3 implements Runnable {
         //String source = "IF_WE_CANNOT_DO_AS_WE_WOULD_WE_SHOULD_DO_AS_WE_CAN";
         String source1 = "Bla5en, kto smolodu b1l molod, bla5en, kto vovrem9 sozrel.";
         String source2 = "Блажен, кто смолоду был молод, блажен, кто вовремя созрел.";
-        //String source = "After dinner sit a while, after supper walk a mile";
         //String source = "abaaaababa";
         Map<String, Algorithm> algorithms = new HashMap<>();
-        /*algorithms.put("no", new NoCodingAlgorithm());
+        algorithms.put("no", new NoCodingAlgorithm());
         algorithms.put("huffman", new HuffmanAlgorithm());
         algorithms.put("adaptive", new AdaptiveArithmeticAlgorithm());
         algorithms.put("numeric", new NumericAlgorithm());
@@ -43,7 +42,7 @@ public class Task3 implements Runnable {
         for (Map.Entry<String, Algorithm> entry : algorithms.entrySet()) {
             String key = entry.getKey();
             Algorithm algorithm = entry.getValue();
-            AlgorithmResult result = algorithm.encode(source1, source2, true);
+            AlgorithmResult result = algorithm.encode(source1, source2);
             parameters.put(key, result);
         }
 

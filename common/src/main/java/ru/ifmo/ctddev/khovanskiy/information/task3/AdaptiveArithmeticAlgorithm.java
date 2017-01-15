@@ -16,7 +16,7 @@ import java.util.List;
 public class AdaptiveArithmeticAlgorithm extends Algorithm {
 
     @Override
-    public AdaptiveArithmeticResult encode(String source1, String source2, boolean showDebugInfo) {
+    public AdaptiveArithmeticResult encode(String source1, String source2) {
         AdaptiveArithmeticResult result = new AdaptiveArithmeticResult();
         String input = Utils.convertToAscii(source1);
         result.setInput(source2);
@@ -81,21 +81,6 @@ public class AdaptiveArithmeticAlgorithm extends Algorithm {
         List<Integer> code = Utils.fractionalPartToBinList(F, l);
         String output = Utils.convertIntListToString(code);
         result.setOutput(output);
-
-        /*if (showDebugInfo) {
-            out.println("| Шаг | x | p(x) | q(x) | F | G | ");
-            out.println("|:-|:-|:-|:-|:-|:-|");
-            for (AdaptiveArithmeticStepResult stepResult : stepResults) {
-                System.out.print(" | " + (stepResult.getOrdinal() + 1) + " | ");
-                System.out.print(stepResult.getX() + " | ");
-                System.out.print(String.format("%.4f", stepResult.getP()) + " | ");
-                System.out.print(new DecimalFormat("#0.###").format(stepResult.getQ()) + " | ");
-                System.out.print(new DecimalFormat("#0.#############################################").format(stepResult.getF()) + " | ");
-                System.out.println(new DecimalFormat("#0.#############################################").format(stepResult.getG()) + " | ");
-            }
-            out.println("Итого = " + l + " бит");
-            out.println("Искомый код = " + output);
-        }*/
 
         return result;
     }

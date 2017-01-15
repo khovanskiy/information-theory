@@ -6,7 +6,6 @@ import ru.ifmo.ctddev.khovanskiy.information.util.Utils;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Locale;
 
 /**
  * Victor Khovanskiy
@@ -16,7 +15,11 @@ public class PPMAAlgorithm extends Algorithm {
     /**
      * Параметр
      */
-    public final static int D = 5;
+    public static final int D = 5;
+
+    public static final double EPSILON = 1e-9;
+
+    public static final int MAX = 100000;
 
     /**
      * Вычисляет и возвращает наибольший общий делитель
@@ -34,7 +37,7 @@ public class PPMAAlgorithm extends Algorithm {
      * @param t подстрока
      * @return количество вхождений
      */
-    private int countOccurrences(String s, String t) {
+    private int occurrences(String s, String t) {
         int total = 0;
         int sl = s.length();
         int tl = t.length();
@@ -47,95 +50,78 @@ public class PPMAAlgorithm extends Algorithm {
     }
 
     @Override
-    public AlgorithmResult encode(String source1, String source2, boolean showDebugInfo) {
+    public AlgorithmResult encode(String source1, String source2) {
         PPMAResult result = new PPMAResult();
         String input = source2;
         result.setInput(input);
         char[] x = input.toCharArray();
         int n = x.length;
-
-        log.info("Исходная строка = " + input + "\n");
         int unused = 1 << 8;
-        String was = "";
-        log.info("Шаг\tБуква\tКонтекст\ttau_s\tpr_esc\tpr_symbol");
+        String buffer = "";
         List<PPMAStepResult> stepResults = new ArrayList<>();
-        double prEsc = 0;
-        double symb = 0;
+        double tEsc = 0;
+        double tSymbol = 0;
         for (int i = 0; i < n; ++i) {
-            PPMAStepResult sr = new PPMAStepResult();
-            sr.setOrdinal(i);
+            PPMAStepResult stepResult = new PPMAStepResult();
+            stepResult.setOrdinal(i);
             String symbol = x[i] + "";
-            sr.setSymbol(symbol);
-            System.out.print("|" + (sr.getOrdinal() + 1) + "|" + sr.getSymbol() + "|");
+            stepResult.setSymbol(symbol);
 
             // Находим наибольшее d, удовлетворяющее условию
             int d = 0;
-            while (i - d >= 0 && d <= D && (was.length() == 0 || was.substring(0, was.length() - 1).contains(input.substring(i - d, i)))) {
+            while (i - d >= 0 && d <= D && (buffer.length() == 0 || buffer.substring(0, buffer.length() - 1).contains(input.substring(i - d, i)))) {
                 d++;
             }
             d--;
             // Выбираем контекст
             String context = input.substring(i - d, i);
-            sr.setContext(context);
-            if (context.length() == 0) {
-                System.out.print("#");
-            } else {
-                for (int j = 0; j < context.length(); ++j) {
-                    if (context.charAt(j) == ' ') {
-                        System.out.print("\\_");
-                    } else {
-                        System.out.print(context.charAt(j));
-                    }
-                }
-            }
-            System.out.print("|||||");
-            String tau = Integer.toString(countOccurrences(was, context) - 1);
+            stepResult.setContext(context);
+            String tau = Integer.toString(occurrences(buffer, context) - 1);
             if (i == 0) {
                 tau = "0";
             }
             double esc = 1;
-            double tmpPrSymbol = 1;
+            double symb = 1;
             HashSet<Character> available = new HashSet<>();
             while (d > 0) {
-                if (was.contains(context + input.charAt(i))) {
+                if (buffer.contains(context + input.charAt(i))) {
                     break;
                 }
                 int remTmp = 0;
                 for (Character c : available) {
-                    remTmp += countOccurrences(was, context + c);
+                    remTmp += occurrences(buffer, context + c);
                 }
-                for (int startPos = 0; startPos + context.length() + 1 <= was.length(); startPos++) {
-                    if (was.substring(startPos, startPos + context.length()).equals(context)) {
-                        available.add(was.charAt(startPos + context.length()));
+                for (int startPos = 0; startPos + context.length() + 1 <= buffer.length(); startPos++) {
+                    if (buffer.substring(startPos, startPos + context.length()).equals(context)) {
+                        available.add(buffer.charAt(startPos + context.length()));
                     }
                 }
-                esc *= countOccurrences(was.substring(0, was.length() - 1), context) + 1 - remTmp;
+                esc *= occurrences(buffer.substring(0, buffer.length() - 1), context) + 1 - remTmp;
                 context = context.substring(1);
                 // Уменьшаем длину контекста
                 d--;
-                tau += "," + Integer.toString(countOccurrences(was, context) - 1);
+                tau += "," + Integer.toString(occurrences(buffer, context) - 1);
             }
-            sr.setTau(tau);
-            log.info(sr.getTau() + "|");
+            stepResult.setTau(tau);
 
-            int rem = 0;
+            int z = 0;
             for (Character c : available) {
-                rem += countOccurrences(was, context + c);
+                z += occurrences(buffer, context + c);
             }
             if (d > 0) {
                 // Кодируем x_{t+1} в соответствии с контекстом
-                int cntWithCurrentLetter = countOccurrences(was, context + x[i]);
-                int cntTotal = countOccurrences(was.substring(0, was.length() - 1), context);
-                tmpPrSymbol *= (cntTotal + 1.0 - rem) / cntWithCurrentLetter;
+                int withLetter = occurrences(buffer, context + x[i]);
+                int total = occurrences(buffer.substring(0, buffer.length() - 1), context);
+                symb *= (total + 1.0 - z) / withLetter;
             } else {
                 // Кодирование без контекста
-                if (was.indexOf(input.charAt(i)) != -1) {
-                    int cntCurrentLetter = countOccurrences(was, input.substring(i, i + 1));
-                    int cntTotal = was.length();
-                    tmpPrSymbol *= (cntTotal + 1.0 - rem) / cntCurrentLetter;
+                if (buffer.indexOf(input.charAt(i)) != -1) {
+                    int withoutLetter = occurrences(buffer, input.substring(i, i + 1));
+                    int total = buffer.length();
+                    symb *= (total + 1.0 - z) / withoutLetter;
                 } else {
-                    esc *= was.length() + 1 - rem; // esc-symbol
-                    tmpPrSymbol *= unused--;
+                    esc *= buffer.length() + 1 - z;
+                    symb *= unused--;
                 }
             }
 
@@ -145,37 +131,35 @@ public class PPMAAlgorithm extends Algorithm {
             } else {
                 pescs = " ";
             }
-            sr.setPescs(pescs);
+            stepResult.setPescs(pescs);
 
-            String pas = fraction(1 / tmpPrSymbol);
-            sr.setPac(pas);
+            String pas = fraction(1 / symb);
+            stepResult.setPac(pas);
 
-            System.out.println(pescs + "*****" + pas);
-            prEsc += Utils.log(esc, 2);
-            symb += Utils.log(tmpPrSymbol, 2);
-            was += input.charAt(i);
-            stepResults.add(sr);
+            tEsc += Utils.log(esc, 2);
+            tSymbol += Utils.log(symb, 2);
+            buffer += input.charAt(i);
+            stepResults.add(stepResult);
         }
         result.setStepResults(stepResults);
-        int bits = ((int) Math.ceil(prEsc + symb) + 1);
+        int bits = ((int) Math.ceil(tEsc + tSymbol) + 1);
         result.setBits(bits);
-        System.out.printf(Locale.US, "Итого = up[ %.4f + %.4f ] + 1 = %d бит\n\n", prEsc, symb, result.getBits());
+
+        log.info("Итого = up[ %.4f + %.4f ] + 1 = %d бит\n\n", tEsc, tSymbol, result.getBits());
         return result;
     }
 
-    private static String fraction(double x) {
-        final int MAX = 100000;
-        final double eps = 1e-9;
-        int bestDenom = 1;
-        for (int denom = 1; denom <= MAX; denom++) {
-            if (Math.abs(denom * x - Math.round(denom * x)) <= eps) {
-                bestDenom = denom;
+    private static String fraction(double input) {
+        int bestResult = 1;
+        for (int value = 1; value <= MAX; ++value) {
+            if (Math.abs(value * input - Math.round(value * input)) <= EPSILON) {
+                bestResult = value;
             }
         }
-        int bestNom = (int) Math.round(bestDenom * x);
-        int g = gcd(bestNom, bestDenom);
-        bestDenom /= g;
-        bestNom /= g;
-        return bestDenom == 1 ? Integer.toString(bestNom) : Integer.toString(bestNom) + "/" + Integer.toString(bestDenom);
+        int bestResult2 = (int) Math.round(bestResult * input);
+        int gcdResult = gcd(bestResult2, bestResult);
+        bestResult /= gcdResult;
+        bestResult2 /= gcdResult;
+        return bestResult == 1 ? Integer.toString(bestResult2) : Integer.toString(bestResult2) + "/" + Integer.toString(bestResult);
     }
 }

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Теория информации</string>
+    <string name="calculate">Вычислить</string>
+    <string name="error">Ошибка</string>
+    <string name="probability">Вероятность</string>
+    <string name="erase">Ошибка стирания</string>
+    <string name="binarySymmetricChannel">Двоичный симметричный канал</string>
+</resources>

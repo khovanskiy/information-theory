@@ -36,7 +36,7 @@ public class DistancesAlgorithm extends Algorithm {
     }
 
     @Override
-    public AlgorithmResult encode(String source1, String source2, boolean showDebugInfo) {
+    public AlgorithmResult encode(String source1, String source2) {
         DistancesResult result = new DistancesResult();
         String input = source2;
         result.setInput(source2);
@@ -56,31 +56,34 @@ public class DistancesAlgorithm extends Algorithm {
             DistancesStepResult stepResult = new DistancesStepResult();
             stepResult.setOrdinal(ordinal);
 
-            int countQuestions = 0;
-            int st = letter + 1;
-            while (st < input.length() && sequence[st] == '?') {
-                st++;
+            int questions = 0;
+            int pos = letter + 1;
+            while (pos < input.length() && sequence[pos] == '?') {
+                pos++;
             }
-            int idx = input.substring(st).indexOf(input.substring(letter, letter + 1));
+            String substring = input.substring(pos);
+            int index = substring.indexOf(input.substring(letter, letter + 1));
             String y = "";
-            if (idx != -1) {
-                idx += st;
-                for (int i = st; i <= idx; ++i) {
+            if (index != -1) {
+                index += pos;
+                for (int i = pos; i <= index; ++i) {
                     if (sequence[i] == '?') {
-                        ++countQuestions;
+                        ++questions;
                     }
                 }
 
-                String formattedSequence = formatSequence(sequence, new int[]{letter, idx});
+                String formattedSequence = formatSequence(sequence, new int[]{letter, index});
                 stepResult.setSequence(formattedSequence);
-                y += countQuestions;
+                y += questions;
 
-                for (int i = idx + 1; i < sequence.length; i++)
-                    if (sequence[i] == '?')
-                        countQuestions++;
-                y += "(" + countQuestions + ")";
+                for (int i = index + 1; i < sequence.length; ++i) {
+                    if (sequence[i] == '?') {
+                        questions++;
+                    }
+                }
+                y += "(" + questions + ")";
 
-                sequence[idx] = sequence[letter];
+                sequence[index] = sequence[letter];
                 filled++;
             } else {
                 String formattedSequence = formatSequence(sequence, new int[]{letter});

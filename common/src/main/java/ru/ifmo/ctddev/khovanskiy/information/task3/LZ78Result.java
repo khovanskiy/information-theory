@@ -5,7 +5,7 @@ import lombok.Data;
 import java.util.List;
 
 /**
- * victor
+ * Victor Khovanskiy
  */
 @Data
 public class LZ78Result extends AlgorithmResult {

@@ -9,5 +9,5 @@ public abstract class Algorithm {
      */
     protected static final int M = 256;
 
-    public abstract AlgorithmResult encode(String source1, String source2, boolean showDebugInfo);
+    public abstract AlgorithmResult encode(String source1, String source2);
 }

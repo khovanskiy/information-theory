@@ -15,7 +15,7 @@ import java.util.TreeMap;
 public class LZ78Algorithm extends Algorithm {
 
     @Override
-    public LZ78Result encode(String source1, String source2, boolean showDebugInfo) {
+    public LZ78Result encode(String source1, String source2) {
         LZ78Result result = new LZ78Result();
         String input = Utils.convertToAscii(source1);
         result.setInput(source2);

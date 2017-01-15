@@ -10,7 +10,7 @@ import java.util.*;
 public class NumericAlgorithm extends Algorithm {
 
     @Override
-    public NumericResult encode(String source1, String source2, boolean showDebugInfo) {
+    public NumericResult encode(String source1, String source2) {
         NumericResult result = new NumericResult();
         String input = Utils.convertToAscii(source1);
         result.setInput(source2);
@@ -64,19 +64,6 @@ public class NumericAlgorithm extends Algorithm {
         String output = Utils.convertIntListToString(code);
         result.setOutput(output);
 
-        /*if (log.isInfoEnabled()) {
-            log.info("строка = " + input);
-            log.info("количество композиций = " + numberOfCompositions);
-            log.info("номер текущей композиции = " + positionOfComposition);
-            log.info("количество битов для передачи композиции = " + l1);
-
-            log.info("total number of sequences = " + numberOfSequences);
-            log.info("our sequence has number = " + positionOfSequence);
-            log.info("bits for sequence = " + l2);
-            log.info("total amount of bits = " + (l1 + l2));
-
-            log.info("encoded string = " + output);
-        }*/
         return result;
     }
 

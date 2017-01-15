@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">InformationTheoryTest</string>
+    <string name="calculate">Calculate</string>
+    <string name="error">Error</string>
+    <string name="probability">Probability</string>
+    <string name="erase">Erase error</string>
+    <string name="resultDouble" translatable="false">%1$f</string>
+    <string name="binarySymmetricChannel">Binary Symmetric Channel</string>
+
+</resources>
